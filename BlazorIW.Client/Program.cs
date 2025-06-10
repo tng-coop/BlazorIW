@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorIW.Client.Pages;
 using BlazorIW.Client.Services;
-using Microsoft.AspNetCore.Components.WebAssembly.ProtectedBrowserStorage;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
