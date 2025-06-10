@@ -5,7 +5,7 @@
 
 <PageTitle>WordPress Posts</PageTitle>
 
-@inject WordPressService WordPress
+@inject WordPressService WordPressSvc
 @inject BrowserStorageService Storage
 
 <h1>WordPress Posts</h1>
@@ -114,7 +114,7 @@ else if (posts != null)
         posts = null;
         try
         {
-            posts = await WordPress.FetchPostsAsync(baseUrl);
+            posts = await WordPressSvc.FetchPostsAsync(baseUrl);
             if (posts.Count == 0)
             {
                 errorMessage = "No posts found.";
