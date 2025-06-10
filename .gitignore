@@ -513,9 +513,7 @@ BlazorIW/a.sh
 
 filecache
 
-/BlazorIW/wwwroot/dist/*
-/BlazorIW/wwwroot/lib/tinymce/*
-/BlazorIW/wwwroot/lib/bootstrap-icons/*
+/BlazorIW/wwwroot/libman
 
 /MyMudServerApp/*
 BlazorIW/Data/app.db
