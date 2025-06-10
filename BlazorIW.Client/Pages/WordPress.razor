@@ -1,0 +1,66 @@
+@page "/wordpress"
+@rendermode InteractiveWebAssembly
+@using System.Text.Json
+
+<PageTitle>WordPress Posts</PageTitle>
+
+@inject WordPressService WordPress
+
+<h1>WordPress Posts</h1>
+
+<div class="mb-3">
+    <input class="form-control" placeholder="Enter base API URL" @bind="baseUrl" />
+</div>
+<button class="btn btn-primary mb-3" @onclick="LoadPosts">Fetch Posts</button>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p class="text-danger">@errorMessage</p>
+}
+else if (postsJson != null)
+{
+    <pre>@postsJson</pre>
+}
+
+@code {
+    private string? baseUrl;
+    private List<JsonElement>? posts;
+    private bool isLoading;
+    private string? errorMessage;
+
+    private string? postsJson => posts is null ? null : JsonSerializer.Serialize(posts, new JsonSerializerOptions { WriteIndented = true });
+
+    private async Task LoadPosts()
+    {
+        if (string.IsNullOrWhiteSpace(baseUrl))
+        {
+            errorMessage = "Please enter a URL.";
+            posts = null;
+            return;
+        }
+
+        isLoading = true;
+        errorMessage = null;
+        posts = null;
+        try
+        {
+            posts = await WordPress.FetchPostsAsync(baseUrl);
+            if (posts.Count == 0)
+            {
+                errorMessage = "No posts found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
