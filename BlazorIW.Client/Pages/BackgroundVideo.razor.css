@@ -1,0 +1,38 @@
+.background-video {
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 10;
+    height: 30vh;
+    width: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: -1;
+    background-color: black;
+    opacity: 0;
+    /* Fade the video out near the sidebar to improve menu legibility */
+    mask-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.1)   0px,   /* fully opaque at 0px */
+    rgba(255, 255, 255, 0.1)   150px,   /* fully opaque at 0px */
+    rgba(255, 255, 255, 1) 350px    /* fully transparent at 250px */
+  );
+    -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.1)   0px,   /* fully opaque at 0px */
+    rgba(255, 255, 255, 0.1)   150px,   /* fully opaque at 0px */
+    rgba(255, 255, 255, 1) 350px    /* fully transparent at 250px */
+  );
+}
+
+#video-info {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 0.9rem;
+    z-index: 1;
+}
