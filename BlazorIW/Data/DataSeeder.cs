@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Linq;
 
 using BlazorIW.Services;
@@ -48,7 +49,10 @@ public static class DataSeeder
         db.HtmlContents.Add(new HtmlContentRevision
         {
             Revision = 1,
-            Html = "<p>Hello, world!</p>",
+            Date = DateTime.UtcNow,
+            Title = "Hello",
+            Excerpt = "Welcome",
+            Content = "<p>Hello, world!</p>",
             IsPublished = true
         });
 
