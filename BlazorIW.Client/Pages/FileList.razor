@@ -69,5 +69,15 @@ else
         isAssessing = false;
     }
 
-    private record FileStatusInfo(string Path, string Status);
+    private class FileStatusInfo
+    {
+        public string Path { get; set; }
+        public string Status { get; set; }
+
+        public FileStatusInfo(string path, string status)
+        {
+            Path = path;
+            Status = status;
+        }
+    }
 }
