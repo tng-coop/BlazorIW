@@ -1,0 +1,49 @@
+@page "/titles"
+
+<PageTitle>Titles</PageTitle>
+
+@inject HtmlContentService HtmlSvc
+
+<h1>Titles</h1>
+
+@if (items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (items.Count == 0)
+{
+    <p>No entries found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Excerpt</th>
+                <th>Published</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Title</td>
+                    <td>@((MarkupString)item.Excerpt)</td>
+                    <td>@item.IsPublished</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<HtmlContentDto>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await HtmlSvc.GetAllAsync();
+    }
+}

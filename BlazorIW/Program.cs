@@ -243,6 +243,14 @@ app.MapGet("/api/html-content-titles", async (ApplicationDbContext db, Cancellat
     return Results.Json(titles);
 });
 
+app.MapGet("/api/html-contents", async (ApplicationDbContext db, CancellationToken ct) =>
+{
+    var items = await db.HtmlContents
+        .Select(h => new HtmlContentDto(h.Id, h.Revision, h.Date, h.Title, h.Excerpt, h.Content, h.IsReviewRequested, h.IsPublished))
+        .ToListAsync(ct);
+    return Results.Json(items);
+});
+
 app.MapPost("/api/import-html-content", async (ILogger<Program> logger, ApplicationDbContext db, [FromBody] List<ImportPostDto> posts, CancellationToken ct) =>
 {
     logger.LogInformation("Received import request for {Count} posts", posts.Count);
@@ -292,4 +300,5 @@ app.MapGet("/api/files", (WebRootFileService service) => Results.Json(service.Ge
 app.Run();
 
 record ImportPostDto(string Date, string Title, string Excerpt, string Content);
+record HtmlContentDto(Guid Id, int Revision, DateTime Date, string Title, string Excerpt, string Content, bool IsReviewRequested, bool IsPublished);
 

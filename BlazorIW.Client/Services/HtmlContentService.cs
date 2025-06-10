@@ -49,7 +49,29 @@ public class HtmlContentService(HttpClient httpClient, NavigationManager navigat
         _logger.LogInformation("Import returned {Added} added posts", added);
         return added;
     }
+
+    public async Task<List<HtmlContentDto>> GetAllAsync()
+    {
+        if (_httpClient.BaseAddress is null)
+        {
+            _httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
+        }
+
+        _logger.LogInformation("Requesting all html content from {BaseAddress}", _httpClient.BaseAddress);
+
+        try
+        {
+            var items = await _httpClient.GetFromJsonAsync<List<HtmlContentDto>>("api/html-contents");
+            return items ?? new List<HtmlContentDto>();
+        }
+        catch
+        {
+            _logger.LogError("Failed to fetch html contents");
+            return new List<HtmlContentDto>();
+        }
+    }
 }
 
 public record ImportPostDto(string Date, string Title, string Excerpt, string Content);
 public record ImportResult(int Added);
+public record HtmlContentDto(Guid Id, int Revision, DateTime Date, string Title, string Excerpt, string Content, bool IsReviewRequested, bool IsPublished);
