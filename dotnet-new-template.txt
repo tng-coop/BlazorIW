@@ -1,0 +1,1 @@
+dotnet new blazor -n BlazorIW -f net9.0 -au Individual -int WebAssembly -ai
