@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 
-using BlazorIWApp.Services;
+using BlazorIW.Services;
 
-namespace BlazorIWApp.Data;
+namespace BlazorIW.Data;
 
 public static class DataSeeder
 {

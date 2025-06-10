@@ -4,7 +4,7 @@ using BlazorIW.Client.Pages;
 using BlazorIW.Components;
 using BlazorIW.Components.Account;
 using BlazorIW.Data;
-using BlazorIWApp.Data;
+using BlazorIW.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

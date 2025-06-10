@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace BlazorIWApp.Data;
+namespace BlazorIW.Data;
 
 public static class DbContextExtensions
 {
