@@ -5,6 +5,7 @@
 <PageTitle>WordPress Posts</PageTitle>
 
 @inject WordPressService WordPress
+@inject BrowserStorageService Storage
 
 <h1>WordPress Posts</h1>
 
@@ -27,12 +28,36 @@ else if (postsJson != null)
 }
 
 @code {
+    private const string UrlKey = "wordpress-base-url";
+    private const string PostsKey = "wordpress-posts";
+
     private string? baseUrl;
     private List<JsonElement>? posts;
     private bool isLoading;
     private string? errorMessage;
 
     private string? postsJson => posts is null ? null : JsonSerializer.Serialize(posts, new JsonSerializerOptions { WriteIndented = true });
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            baseUrl = await Storage.GetLocalStorageAsync(UrlKey);
+            var json = await Storage.GetLocalStorageAsync(PostsKey);
+            if (!string.IsNullOrEmpty(json))
+            {
+                try
+                {
+                    posts = JsonSerializer.Deserialize<List<JsonElement>>(json);
+                }
+                catch
+                {
+                    posts = null;
+                }
+            }
+            StateHasChanged();
+        }
+    }
 
     private async Task LoadPosts()
     {
@@ -53,6 +78,8 @@ else if (postsJson != null)
             {
                 errorMessage = "No posts found.";
             }
+            await Storage.SetLocalStorageAsync(UrlKey, baseUrl);
+            await Storage.SetLocalStorageAsync(PostsKey, postsJson ?? string.Empty);
         }
         catch (Exception ex)
         {
