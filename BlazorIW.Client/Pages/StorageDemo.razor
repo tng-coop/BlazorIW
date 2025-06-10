@@ -1,0 +1,48 @@
+@page "/storage"
+
+<PageTitle>Storage Demo</PageTitle>
+
+<h1>Browser Storage</h1>
+
+<ul>
+    <li>Capacity: ~5&nbsp;MB (per origin)</li>
+    <li>Security: &gt; unencrypted</li>
+    <li>Lifetime:
+        <code>sessionStorage</code> dies when the tab/window closes,
+        <code>localStorage</code> survives across browser restarts
+    </li>
+</ul>
+
+<h2>Using Blazored.LocalStorage</h2>
+
+<p>Install</p>
+<pre><code>dotnet add package Blazored.LocalStorage</code></pre>
+
+<p>Register in <code>Program.cs</code></p>
+<pre>@registrationSnippet</pre>
+
+<p>Inject &amp; use in a component</p>
+<pre>@usageSnippet</pre>
+
+<p>When to use: small, non-sensitive settings or caches where encryption isn&rsquo;t critical.</p>
+
+@code {
+    private readonly MarkupString registrationSnippet =
+        (MarkupString)"builder.Services.AddBlazoredLocalStorage();";
+
+    private readonly MarkupString usageSnippet = (MarkupString)@"@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+@code {
+  protected override async Task OnInitializedAsync()
+  {
+    // Save
+    await localStorage.SetItemAsync("userPrefs", new UserPreferences { Theme = "dark" });
+
+    // Retrieve
+    var prefs = await localStorage.GetItemAsync<UserPreferences>("userPrefs");
+
+    // Remove
+    await localStorage.RemoveItemAsync("userPrefs");
+  }
+}";
+}
