@@ -1,7 +1,10 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
-
 <h1>Hello, world!</h1>
-
 Welcome to your new app.
+
+@{
+    var counterHtml = (MarkupString)"<my-counter></my-counter>";
+}
+<div>@counterHtml</div>
