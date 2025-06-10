@@ -15,6 +15,10 @@
 
 <body>
     <Routes @rendermode="PageRenderMode" />
+    <!-- 1) Blazor Custom Elements runtime -->
+    <script type="module"
+        src="_content/Microsoft.AspNetCore.Components.CustomElements/BlazorCustomElements.lib.module.js">
+        </script>
     <script src="_framework/blazor.web.js"></script>
 </body>
 
@@ -25,5 +29,5 @@
     private HttpContext HttpContext { get; set; } = default!;
 
     private IComponentRenderMode? PageRenderMode =>
-        HttpContext.AcceptsInteractiveRouting() ? InteractiveWebAssembly : null;
+    HttpContext.AcceptsInteractiveRouting() ? InteractiveWebAssembly : null;
 }
