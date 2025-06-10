@@ -232,6 +232,15 @@ app.MapRazorComponents<App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
+app.MapGet("/api/html-content-titles", async (ApplicationDbContext db, CancellationToken ct) =>
+{
+    var titles = await db.HtmlContents
+        .Select(h => h.Title)
+        .Distinct()
+        .ToListAsync(ct);
+    return Results.Json(titles);
+});
+
 app.MapGet("/api/files", (WebRootFileService service) => Results.Json(service.GetFiles().ToList()));
 
 app.Run();
