@@ -150,9 +150,9 @@
 
     startTime = Date.now();
     playbacks++;
-    if (info) {
-      info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (0s)`;
-    }
+    // if (info) {
+    //   info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (0s)`;
+    // }
 
     setupTimeUpdate(videos[currentVideo]);
   }
@@ -196,9 +196,9 @@
     // Update info panel & timestamps
     startTime = Date.now();
     playbacks++;
-    if (info) {
-      info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (0s)`;
-    }
+    // if (info) {
+    //   info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (0s)`;
+    // }
 
     // Re‐attach timeupdate to the now-current video
     setupTimeUpdate(videos[currentVideo]);
@@ -211,7 +211,7 @@
     setInterval(() => {
       if (startTime !== null) {
         const seconds = Math.floor((Date.now() - startTime) / 1000);
-        info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (${seconds}s)`;
+        // info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (${seconds}s)`;
       }
     }, 1000);
   }

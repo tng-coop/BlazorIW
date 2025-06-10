@@ -26,7 +26,7 @@
   );
 }
 
-#video-info {
+/* #video-info {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -35,4 +35,4 @@
     color: white;
     font-size: 0.9rem;
     z-index: 1;
-}
+} */
