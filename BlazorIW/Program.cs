@@ -51,6 +51,7 @@ builder.Services.AddScoped<WebRootFileService>();
 builder.Services.AddScoped<FileService>();
 builder.Services.AddScoped<BrowserStorageService>();
 builder.Services.AddScoped<LocalizationService>();
+builder.Services.AddScoped<WordPressService>();
 
 var app = builder.Build();
 
