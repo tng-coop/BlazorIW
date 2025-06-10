@@ -1,4 +1,5 @@
 @page "/storage"
+@rendermode InteractiveWebAssembly
 
 <PageTitle>Storage Demo</PageTitle>
 
@@ -29,9 +30,13 @@
     private string? storedValue;
     private const string StorageKey = "storage-demo-value";
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        storedValue = await Storage.GetLocalStorageAsync(StorageKey);
+        if (firstRender)
+        {
+            storedValue = await Storage.GetLocalStorageAsync(StorageKey);
+            StateHasChanged();
+        }
     }
 
     private async Task SaveLocalAsync()
