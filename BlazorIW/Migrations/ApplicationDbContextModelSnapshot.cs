@@ -133,7 +133,14 @@ namespace BlazorIW.Migrations
                     b.Property<int>("Revision")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Html")
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Excerpt")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -142,6 +149,10 @@ namespace BlazorIW.Migrations
 
                     b.Property<bool>("IsReviewRequested")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id", "Revision");
 

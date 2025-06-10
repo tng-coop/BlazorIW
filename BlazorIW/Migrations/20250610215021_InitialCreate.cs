@@ -84,7 +84,10 @@ namespace BlazorIW.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Revision = table.Column<int>(type: "integer", nullable: false),
-                    Html = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Excerpt = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
                     IsReviewRequested = table.Column<bool>(type: "boolean", nullable: false),
                     IsPublished = table.Column<bool>(type: "boolean", nullable: false)
                 },
