@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
 
 namespace BlazorIW.Services;
 
@@ -32,24 +30,11 @@ public class WebRootFileService(IWebHostEnvironment env)
                 {
                     try
                     {
-                        var info = new FileInfo(entry.PhysicalPath);
-                        owner = info.GetAccessControl()
-                            .GetOwner(typeof(NTAccount))
-                            .ToString();
-
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        {
-                            permissions = info.Attributes.ToString();
-                        }
-                        else
-                        {
-                            var mode = File.GetUnixFileMode(entry.PhysicalPath);
-                            permissions = UnixModeToString(mode);
-                        }
+                        var mode = File.GetUnixFileMode(entry.PhysicalPath);
+                        permissions = UnixModeToString(mode);
                     }
                     catch
                     {
-                        owner = "Unavailable";
                         permissions = "Unavailable";
                     }
                 }
