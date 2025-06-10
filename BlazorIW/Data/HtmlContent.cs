@@ -9,4 +9,6 @@ public class HtmlContentRevision : HtmlContent, IHtmlContent
 {
     public int Revision { get; set; } = 1;
     public string Html { get; set; } = string.Empty;
+    public bool IsReviewRequested { get; set; }
+    public bool IsPublished { get; set; }
 }

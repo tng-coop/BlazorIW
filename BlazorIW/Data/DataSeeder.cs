@@ -48,7 +48,8 @@ public static class DataSeeder
         db.HtmlContents.Add(new HtmlContentRevision
         {
             Revision = 1,
-            Html = "<p>Hello, world!</p>"
+            Html = "<p>Hello, world!</p>",
+            IsPublished = true
         });
 
         await db.SaveChangesAsync(cancellationToken);
