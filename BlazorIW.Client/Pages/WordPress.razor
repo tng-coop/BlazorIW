@@ -69,7 +69,7 @@ else if (posts != null)
                     var title = p.GetProperty("title").GetProperty("rendered").GetString() ?? string.Empty;
                     var json = JsonSerializer.Serialize(p, new JsonSerializerOptions { WriteIndented = true });
                     <tr>
-                        <td>@(existingTitles.Contains(title) ? "✔" : string.Empty)</td>
+                        <td>@(existingTitles.Contains(title.Trim()) ? "✔" : "✖")</td>
                         <td><pre>@json</pre></td>
                     </tr>
                 }
