@@ -50,6 +50,7 @@ builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<WebRootFileService>();
 builder.Services.AddScoped<FileService>();
 builder.Services.AddScoped<BrowserStorageService>();
+builder.Services.AddScoped<LocalizationService>();
 
 var app = builder.Build();
 
