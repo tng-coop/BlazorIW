@@ -16,34 +16,99 @@ else if (items.Count == 0)
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Title</th>
-                <th>Excerpt</th>
-                <th>Published</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in items)
-            {
-                <tr>
-                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
-                    <td>@item.Title</td>
-                    <td>@((MarkupString)item.Excerpt)</td>
-                    <td>@item.IsPublished</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <ul class="list-group">
+        @foreach (var item in items)
+        {
+            var expanded = expandedItemStates.TryGetValue(item.Id, out var st) && st.Expanded;
+            var showFull = expandedItemStates.TryGetValue(item.Id, out st) && st.ShowFull;
+            <li class="list-group-item title-item">
+                <button class="title-button" @onclick="() => ToggleItem(item.Id)">
+                    @item.Date.ToString("yyyy-MM-dd") - @item.Title
+                </button>
+                <div class="excerpt-container @(expanded ? "expanded" : string.Empty)">
+                    @if (expanded)
+                    {
+                        @if (showFull)
+                        {
+                            <div class="mb-2">
+                                @((MarkupString)item.Content)
+                            </div>
+                            <button class="btn btn-sm btn-secondary me-1" @onclick="() => ShowExcerpt(item.Id)">Show Excerpt</button>
+                        }
+                        else
+                        {
+                            <div class="mb-2">
+                                @((MarkupString)item.Excerpt)
+                            </div>
+                            <button class="btn btn-sm btn-secondary me-1" @onclick="() => ShowFull(item.Id)">Show Full</button>
+                        }
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Collapse(item.Id)">Collapse</button>
+                    }
+                </div>
+            </li>
+        }
+    </ul>
 }
 
 @code {
     private List<HtmlContentDto>? items;
 
+    private readonly Dictionary<Guid, ItemState> expandedItemStates = new();
+
     protected override async Task OnInitializedAsync()
     {
-        items = await HtmlSvc.GetAllAsync();
+        var fetched = await HtmlSvc.GetAllAsync();
+        items = fetched
+            .OrderByDescending(i => i.Date)
+            .ToList();
+    }
+
+    private void ToggleItem(Guid id)
+    {
+        if (!expandedItemStates.TryGetValue(id, out var state))
+        {
+            state = new ItemState { Expanded = true };
+            expandedItemStates[id] = state;
+        }
+        else
+        {
+            state.Expanded = !state.Expanded;
+            if (!state.Expanded)
+            {
+                state.ShowFull = false;
+            }
+        }
+    }
+
+    private void ShowFull(Guid id)
+    {
+        if (expandedItemStates.TryGetValue(id, out var state))
+        {
+            state.ShowFull = true;
+        }
+    }
+
+    private void ShowExcerpt(Guid id)
+    {
+        if (expandedItemStates.TryGetValue(id, out var state))
+        {
+            state.ShowFull = false;
+        }
+    }
+
+    private void Collapse(Guid id)
+    {
+        if (expandedItemStates.TryGetValue(id, out var state))
+        {
+            state.Expanded = false;
+            state.ShowFull = false;
+        }
+    }
+
+    private class ItemState
+    {
+        public bool Expanded { get; set; }
+        public bool ShowFull { get; set; }
     }
 }
+
