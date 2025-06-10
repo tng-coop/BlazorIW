@@ -49,6 +49,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<WebRootFileService>();
 builder.Services.AddScoped<FileService>();
+builder.Services.AddScoped<BrowserStorageService>();
 
 var app = builder.Build();
 
