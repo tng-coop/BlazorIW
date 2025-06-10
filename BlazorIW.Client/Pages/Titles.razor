@@ -3,6 +3,7 @@
 <PageTitle>Titles</PageTitle>
 
 @inject HtmlContentService HtmlSvc
+@inject AuthenticationStateProvider AuthStateProvider
 
 <h1>Titles</h1>
 
@@ -42,7 +43,9 @@ else
                             </div>
                             <button class="btn btn-sm btn-secondary me-1" @onclick="() => ShowFull(item.Id)">Show Full</button>
                         }
-                        <div class="mb-2">Status: @GetStatusValue(item)</div>
+                        <AuthorizeView>
+                            <div class="mb-2">Status: @GetStatusValue(item)</div>
+                        </AuthorizeView>
                         <AuthorizeView Roles="admin">
                             <select class="form-select form-select-sm w-auto mb-2" value="@GetStatusValue(item)" @onchange="async e => await ChangeStatusAsync(item, e.Value?.ToString())">
                                 <option value="Draft">Draft</option>
@@ -63,12 +66,21 @@ else
 
     private readonly Dictionary<Guid, ItemState> expandedItemStates = new();
 
+    private bool isAuthenticated;
+
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+
         var fetched = await HtmlSvc.GetAllAsync();
-        items = fetched
+        var ordered = fetched
             .OrderByDescending(i => i.Date)
             .ToList();
+
+        items = isAuthenticated
+            ? ordered
+            : ordered.Where(i => i.IsPublished).ToList();
     }
 
     private void ToggleItem(Guid id)
