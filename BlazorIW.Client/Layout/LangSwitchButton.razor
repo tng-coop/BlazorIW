@@ -1,0 +1,44 @@
+@inject ProtectedLocalStorage Storage
+@inject IJSRuntime JS
+
+<button class="btn btn-link" @onclick="ToggleLanguage">@_label</button>
+
+@code {
+    private const string StorageKey = "preferredLanguage";
+    private string _language = "en";
+    private string _label = "EN";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var stored = await Storage.GetAsync<string>(StorageKey);
+        if (stored.Success && !string.IsNullOrEmpty(stored.Value))
+        {
+            SetLanguage(stored.Value);
+        }
+        else
+        {
+            var browserLang = await JS.InvokeAsync<string>("langSwitch.getBrowserLanguage");
+            if (!string.IsNullOrEmpty(browserLang) && browserLang.StartsWith("ja", StringComparison.OrdinalIgnoreCase))
+            {
+                SetLanguage("ja");
+            }
+            else
+            {
+                SetLanguage("en");
+            }
+            await Storage.SetAsync(StorageKey, _language);
+        }
+    }
+
+    private async Task ToggleLanguage()
+    {
+        SetLanguage(_language == "ja" ? "en" : "ja");
+        await Storage.SetAsync(StorageKey, _language);
+    }
+
+    private void SetLanguage(string lang)
+    {
+        _language = lang == "ja" ? "ja" : "en";
+        _label = _language == "ja" ? "JP" : "EN";
+    }
+}
