@@ -6,29 +6,40 @@
 
 <h1>Files under wwwroot</h1>
 
-@if (fileNames == null)
+@if (files == null)
 {
     <p>Loading...</p>
 }
-else if (!fileNames.Any())
+else if (!files.Any())
 {
     <p>No files found.</p>
 }
 else
 {
-    <ul>
-        @foreach (var file in fileNames)
-        {
-            <li>@file</li>
-        }
-    </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Path</th>
+                <th>Attributes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in files)
+            {
+                <tr>
+                    <td>@file.Path</td>
+                    <td>@file.Attributes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
-    private IEnumerable<string>? fileNames;
+    private IEnumerable<WebRootFileInfo>? files;
 
     protected override async Task OnInitializedAsync()
     {
-        fileNames = await FileService.GetFilesAsync();
+        files = await FileService.GetFilesAsync();
     }
 }
