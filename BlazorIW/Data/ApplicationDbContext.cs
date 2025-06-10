@@ -6,6 +6,12 @@ namespace BlazorIW.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
     public DbSet<BackgroundVideo> BackgroundVideos => Set<BackgroundVideo>();
-    public DbSet<HtmlContent> HtmlContents => Set<HtmlContent>();
+    public DbSet<HtmlContentRevision> HtmlContents => Set<HtmlContentRevision>();
     public DbSet<BranchOfficeContent> BranchOfficeContents => Set<BranchOfficeContent>();
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.Entity<HtmlContentRevision>().HasKey(h => new { h.Id, h.Revision });
+    }
 }

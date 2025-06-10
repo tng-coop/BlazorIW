@@ -45,8 +45,9 @@ public static class DataSeeder
         if (await db.HtmlContents.AnyAsync(cancellationToken))
             return;
 
-        db.HtmlContents.Add(new HtmlContent
+        db.HtmlContents.Add(new HtmlContentRevision
         {
+            Revision = 1,
             Html = "<p>Hello, world!</p>"
         });
 
