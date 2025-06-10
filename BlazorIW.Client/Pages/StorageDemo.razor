@@ -1,0 +1,68 @@
+@page "/storage"
+
+<PageTitle>Storage Demo</PageTitle>
+
+@inject BrowserStorageService Storage
+
+<h1>Browser Storage Demo</h1>
+
+<div class="mb-3">
+    <input class="form-control" placeholder="Enter value" @bind="inputValue" />
+</div>
+
+<div class="mb-3">
+    <button class="btn btn-primary me-1" @onclick="SaveLocalAsync">Save Local</button>
+    <button class="btn btn-secondary me-1" @onclick="LoadLocalAsync">Load Local</button>
+    <button class="btn btn-outline-danger me-1" @onclick="ClearLocalAsync">Clear Local</button>
+</div>
+
+<div class="mb-3">
+    <button class="btn btn-primary me-1" @onclick="SaveSessionAsync">Save Session</button>
+    <button class="btn btn-secondary me-1" @onclick="LoadSessionAsync">Load Session</button>
+    <button class="btn btn-outline-danger me-1" @onclick="ClearSessionAsync">Clear Session</button>
+</div>
+
+<p>Stored value: @storedValue</p>
+
+@code {
+    private string? inputValue;
+    private string? storedValue;
+    private const string StorageKey = "storage-demo-value";
+
+    protected override async Task OnInitializedAsync()
+    {
+        storedValue = await Storage.GetLocalStorageAsync(StorageKey);
+    }
+
+    private async Task SaveLocalAsync()
+    {
+        await Storage.SetLocalStorageAsync(StorageKey, inputValue ?? string.Empty);
+    }
+
+    private async Task LoadLocalAsync()
+    {
+        storedValue = await Storage.GetLocalStorageAsync(StorageKey);
+    }
+
+    private async Task ClearLocalAsync()
+    {
+        await Storage.RemoveLocalStorageAsync(StorageKey);
+        storedValue = null;
+    }
+
+    private async Task SaveSessionAsync()
+    {
+        await Storage.SetSessionStorageAsync(StorageKey, inputValue ?? string.Empty);
+    }
+
+    private async Task LoadSessionAsync()
+    {
+        storedValue = await Storage.GetSessionStorageAsync(StorageKey);
+    }
+
+    private async Task ClearSessionAsync()
+    {
+        await Storage.RemoveSessionStorageAsync(StorageKey);
+        storedValue = null;
+    }
+}

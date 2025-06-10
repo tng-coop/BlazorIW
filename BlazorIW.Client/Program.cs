@@ -11,6 +11,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthenticationStateDeserialization();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<FileService>();
+builder.Services.AddScoped<BrowserStorageService>();
 
 // Register Counter component as custom element <my-counter>
 builder.RootComponents.RegisterCustomElement<Counter>("my-counter");
