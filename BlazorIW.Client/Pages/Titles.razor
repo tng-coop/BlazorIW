@@ -131,8 +131,22 @@ else
         };
 
         await HtmlSvc.SetStatusAsync(item.Id, item.Revision, status);
-        item.IsPublished = status == HtmlContentStatus.Published;
-        item.IsReviewRequested = status == HtmlContentStatus.Review;
+
+        if (items is not null)
+        {
+            var index = items.IndexOf(item);
+            if (index >= 0)
+            {
+                var updated = item with
+                {
+                    IsPublished = status == HtmlContentStatus.Published,
+                    IsReviewRequested = status == HtmlContentStatus.Review
+                };
+
+                items[index] = updated;
+                item = updated;
+            }
+        }
     }
 
     private class ItemState
