@@ -2,6 +2,17 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+body {
+    background-image:
+        linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),
+        url('media/fractal_0.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+
 a, .btn-link {
     color: #006bb7;
 }
