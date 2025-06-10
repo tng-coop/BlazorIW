@@ -19,7 +19,8 @@ RUN dotnet workload install wasm-tools \
 
 # 1.d) Publish (with implicit restore)
 WORKDIR /app/BlazorIW
-RUN dotnet publish -c Release -o ../out -v q
+#RUN dotnet publish -c Release -o ../out -v q
+RUN dotnet publish -c Debug -o ../out -v q
 
 # 2) Runtime Stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
@@ -37,6 +38,7 @@ ENV ASPNETCORE_URLS=http://+:${PORT}
 # Enable development mode & detailed errors (temporarily)
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_DETAILEDERRORS=true
+ENV DOTNET_EnableDiagnostics=1
 
 # Start the Blazor host
 ENTRYPOINT ["dotnet", "BlazorIW.dll"]
