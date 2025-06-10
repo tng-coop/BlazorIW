@@ -52,6 +52,7 @@ builder.Services.AddScoped<FileService>();
 builder.Services.AddScoped<BrowserStorageService>();
 builder.Services.AddScoped<LocalizationService>();
 builder.Services.AddScoped<WordPressService>();
+builder.Services.AddScoped<HtmlContentService>();
 
 var app = builder.Build();
 
