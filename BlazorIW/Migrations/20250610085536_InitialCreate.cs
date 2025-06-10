@@ -83,11 +83,12 @@ namespace BlazorIW.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Revision = table.Column<int>(type: "integer", nullable: false),
                     Html = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HtmlContents", x => x.Id);
+                    table.PrimaryKey("PK_HtmlContents", x => new { x.Id, x.Revision });
                 });
 
             migrationBuilder.CreateTable(

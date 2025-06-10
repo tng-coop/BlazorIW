@@ -93,6 +93,8 @@ jobs:
         env:
           Kestrel__Endpoints__Http__Url: "http://aspnet.lan:5000"
           Kestrel__Endpoints__Https__Url: "https://aspnet.lan:5001"
+          Kestrel__Endpoints__Https__Certificate__Path:   "../cert/aspnet.lan.pfx"
+          Kestrel__Endpoints__Https__Certificate__Password:   "yourpassword"
           Authentication__GitHub__ClientId: ${{ secrets.AUTH_GITHUB_CLIENT_ID }}
           Authentication__GitHub__ClientSecret: ${{ secrets.AUTH_GITHUB_CLIENT_SECRET }}
           Authentication__LINE__ClientId: ${{ secrets.AUTH_LINE_CLIENT_ID }}
@@ -102,6 +104,7 @@ jobs:
           JwtSettings__PrivateKeyBase64: ${{ secrets.JWTSETTINGS_PRIVATE_KEY }}
           DefaultUser__Password: ${{ secrets.DEFAULTUSER_PASSWORD }}
           Pexels__ApiKey: ${{ secrets.PEXELS_API_KEY }}
+
         run: |
           chmod +x ./scripts/run-app-and-tests.sh
           bash -vx ./scripts/run-app-and-tests.sh

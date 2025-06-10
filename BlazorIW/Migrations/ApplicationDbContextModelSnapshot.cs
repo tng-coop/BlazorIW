@@ -125,17 +125,19 @@ namespace BlazorIW.Migrations
                     b.ToTable("BranchOfficeContents");
                 });
 
-            modelBuilder.Entity("BlazorIW.Data.HtmlContent", b =>
+            modelBuilder.Entity("BlazorIW.Data.HtmlContentRevision", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Revision")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Html")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "Revision");
 
                     b.ToTable("HtmlContents");
                 });
