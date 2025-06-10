@@ -5,6 +5,7 @@
 
 # dotenv files
 .env
+*.env
 
 # User-specific files
 *.rsuser
@@ -402,7 +403,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-.idea/
+.idea
 
 ##
 ## Visual studio for Mac
@@ -426,7 +427,7 @@ test-results/
 *.dmg
 *.app
 
-# content below from: https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
+# content below from: https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
 # General
 .DS_Store
 .AppleDouble
@@ -455,7 +456,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# content below from: https://github.com/github/gitignore/blob/main/Global/Windows.gitignore
+# content below from: https://github.com/github/gitignore/blob/master/Global/Windows.gitignore
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
@@ -482,3 +483,39 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+neon.env
+/out
+
+
+# Blazor WebAssembly outputs
+bin/
+obj/
+wwwroot/client/_framework/
+/published
+
+# Static web assets endpoint JSON
+Client.staticwebassets.endpoints.json
+
+cert/aspnet*
+
+jwt_*.pem
+
+Uploader/images/*.png
+Uploader/images/*.mp4
+
+/dumps/*.sql
+
+
+BlazorHybridApp/a.sh
+/a.sh
+/a.patch
+
+filecache
+
+/BlazorHybridApp/wwwroot/dist/*
+/BlazorHybridApp/wwwroot/lib/tinymce/*
+/BlazorHybridApp/wwwroot/lib/bootstrap-icons/*
+
+/MyMudServerApp/*
+BlazorHybridApp/Data/app.db
