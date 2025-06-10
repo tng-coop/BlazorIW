@@ -335,9 +335,73 @@ app.MapPost("/api/import-html-content", async (ILogger<Program> logger, Applicat
 
 app.MapGet("/api/files", (WebRootFileService service) => Results.Json(service.GetFiles().ToList()));
 
+app.MapGet("/api/users", async (UserManager<ApplicationUser> userManager) =>
+{
+    var users = await userManager.Users.ToListAsync();
+    var list = new List<UserInfo>();
+    foreach (var u in users)
+    {
+        var roles = await userManager.GetRolesAsync(u);
+        var disabled = u.LockoutEnd.HasValue && u.LockoutEnd > DateTimeOffset.UtcNow;
+        list.Add(new UserInfo(u.Id, u.Email ?? string.Empty, roles.ToList(), disabled));
+    }
+    return Results.Json(list);
+}).RequireAuthorization(p => p.RequireRole("admin"));
+
+app.MapPost("/api/users", async (CreateUserDto dto, UserManager<ApplicationUser> userManager) =>
+{
+    var user = new ApplicationUser { UserName = dto.Email, Email = dto.Email, EmailConfirmed = true };
+    var result = await userManager.CreateAsync(user, dto.Password);
+    if (!result.Succeeded)
+    {
+        return Results.BadRequest(result.Errors.Select(e => e.Description));
+    }
+    await userManager.AddToRoleAsync(user, dto.Role);
+    return Results.Ok();
+}).RequireAuthorization(p => p.RequireRole("admin"));
+
+app.MapPost("/api/users/{id}/role", async (ClaimsPrincipal caller, string id, SetRoleDto dto, UserManager<ApplicationUser> userManager) =>
+{
+    var currentId = userManager.GetUserId(caller);
+    if (currentId == id)
+    {
+        return Results.BadRequest("Cannot change your own role");
+    }
+    var user = await userManager.FindByIdAsync(id);
+    if (user is null)
+    {
+        return Results.NotFound();
+    }
+    var roles = await userManager.GetRolesAsync(user);
+    await userManager.RemoveFromRolesAsync(user, roles);
+    await userManager.AddToRoleAsync(user, dto.Role);
+    return Results.Ok();
+}).RequireAuthorization(p => p.RequireRole("admin"));
+
+app.MapPost("/api/users/{id}/disable", async (ClaimsPrincipal caller, string id, SetDisabledDto dto, UserManager<ApplicationUser> userManager) =>
+{
+    var currentId = userManager.GetUserId(caller);
+    if (currentId == id)
+    {
+        return Results.BadRequest("Cannot disable yourself");
+    }
+    var user = await userManager.FindByIdAsync(id);
+    if (user is null)
+    {
+        return Results.NotFound();
+    }
+    await userManager.SetLockoutEnabledAsync(user, dto.Disabled);
+    await userManager.SetLockoutEndDateAsync(user, dto.Disabled ? DateTimeOffset.MaxValue : null);
+    return Results.Ok();
+}).RequireAuthorization(p => p.RequireRole("admin"));
+
 app.Run();
 
 record ImportPostDto(string Date, string Title, string Excerpt, string Content);
 record HtmlContentDto(Guid Id, int Revision, DateTime Date, string Title, string Excerpt, string Content, bool IsReviewRequested, bool IsPublished);
 record UpdateStatusDto(Guid Id, int Revision, string Status);
+record UserInfo(string Id, string Email, List<string> Roles, bool IsDisabled);
+record CreateUserDto(string Email, string Password, string Role);
+record SetRoleDto(string Role);
+record SetDisabledDto(bool Disabled);
 

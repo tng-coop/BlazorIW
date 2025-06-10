@@ -15,6 +15,7 @@ builder.Services.AddScoped<BrowserStorageService>();
 builder.Services.AddScoped<WordPressService>();
 builder.Services.AddScoped<HtmlContentService>();
 builder.Services.AddScoped<LocalizationService>();
+builder.Services.AddScoped<UserService>();
 
 // Register Counter component as custom element <my-counter>
 builder.RootComponents.RegisterCustomElement<Counter>("my-counter");
