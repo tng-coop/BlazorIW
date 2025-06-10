@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using BlazorIW.Client.Pages;
 using BlazorIW.Components;
 using BlazorIW.Components.Account;
-using BlazorIW.Data;
 using BlazorIW.Data;
 
 var builder = WebApplication.CreateBuilder(args);
