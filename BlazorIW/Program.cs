@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using BlazorIW.Components;
 using BlazorIW.Components.Account;
 using BlazorIW.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using BlazorIW.Services;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using BlazorIW.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +33,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityEmailSender>();
+builder.Services.AddHttpClient<PexelsClient>();
+builder.Services.AddScoped<ProtectedLocalStorage>();
+builder.Services.AddScoped<LocalizationService>();
 
 var app = builder.Build();
 
