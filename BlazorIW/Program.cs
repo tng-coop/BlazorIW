@@ -251,6 +251,44 @@ app.MapGet("/api/html-contents", async (ApplicationDbContext db, CancellationTok
     return Results.Json(items);
 });
 
+app.MapPost("/api/html-content-status", async (ApplicationDbContext db, UpdateStatusDto dto, CancellationToken ct) =>
+{
+    var item = await db.HtmlContents.FirstOrDefaultAsync(h => h.Id == dto.Id && h.Revision == dto.Revision, ct);
+    if (item is null)
+    {
+        return Results.NotFound();
+    }
+
+    switch (dto.Status)
+    {
+        case "Published":
+            var currentPublished = await db.HtmlContents.FirstOrDefaultAsync(h => h.Id == dto.Id && h.IsPublished, ct);
+            if (currentPublished is not null && currentPublished != item)
+            {
+                currentPublished.IsPublished = false;
+            }
+            item.IsPublished = true;
+            item.IsReviewRequested = false;
+            break;
+        case "Review":
+            var currentReview = await db.HtmlContents.FirstOrDefaultAsync(h => h.Id == dto.Id && h.IsReviewRequested, ct);
+            if (currentReview is not null && currentReview != item)
+            {
+                currentReview.IsReviewRequested = false;
+            }
+            item.IsReviewRequested = true;
+            item.IsPublished = false;
+            break;
+        default:
+            item.IsPublished = false;
+            item.IsReviewRequested = false;
+            break;
+    }
+
+    await db.SaveChangesAsync(ct);
+    return Results.Ok();
+}).RequireAuthorization(policy => policy.RequireRole("admin"));
+
 app.MapPost("/api/import-html-content", async (ILogger<Program> logger, ApplicationDbContext db, [FromBody] List<ImportPostDto> posts, CancellationToken ct) =>
 {
     logger.LogInformation("Received import request for {Count} posts", posts.Count);
@@ -301,4 +339,5 @@ app.Run();
 
 record ImportPostDto(string Date, string Title, string Excerpt, string Content);
 record HtmlContentDto(Guid Id, int Revision, DateTime Date, string Title, string Excerpt, string Content, bool IsReviewRequested, bool IsPublished);
+record UpdateStatusDto(Guid Id, int Revision, string Status);
 
