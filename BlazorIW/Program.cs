@@ -43,6 +43,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityEmailSender
 builder.Services.AddHttpClient<PexelsClient>();
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<LocalizationService>();
+builder.Services.AddScoped<WebRootFileService>();
 
 var app = builder.Build();
 
@@ -90,5 +91,7 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+
+app.MapGet("/api/files", (WebRootFileService service) => Results.Json(service.GetFiles().ToList()));
 
 app.Run();
