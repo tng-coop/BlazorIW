@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorIW.Client.Pages;
 using BlazorIW.Client.Services;
+using Microsoft.AspNetCore.Components.WebAssembly.ProtectedBrowserStorage;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -11,6 +12,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthenticationStateDeserialization();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<FileService>();
+builder.Services.AddScoped<ProtectedLocalStorage>();
 
 // Register Counter component as custom element <my-counter>
 builder.RootComponents.RegisterCustomElement<Counter>("my-counter");
