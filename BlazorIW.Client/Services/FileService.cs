@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorIW.Client.Services;
 
-public record WebRootFileInfo(string Path, string Attributes);
+public record WebRootFileInfo(string Path, string Owner, string Permissions);
 
 public class FileService(HttpClient httpClient, NavigationManager navigationManager)
 {
