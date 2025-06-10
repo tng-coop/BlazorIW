@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using BlazorIW.Client.Pages;
 using BlazorIW.Client.Services;
 
 
@@ -17,7 +16,5 @@ builder.Services.AddScoped<HtmlContentService>();
 builder.Services.AddScoped<LocalizationService>();
 builder.Services.AddScoped<UserService>();
 
-// Register Counter component as custom element <my-counter>
-builder.RootComponents.RegisterCustomElement<Counter>("my-counter");
 
 await builder.Build().RunAsync();
