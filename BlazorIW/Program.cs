@@ -87,6 +87,9 @@ else
 
 app.UseHttpsRedirection();
 
+// Serve files from wwwroot for environments where MapStaticAssets might not
+// register the middleware correctly (e.g., certain container hosts).
+app.UseStaticFiles();
 
 app.UseAntiforgery();
 
