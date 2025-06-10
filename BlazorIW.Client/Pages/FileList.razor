@@ -1,0 +1,34 @@
+@page "/files"
+
+<PageTitle>File List</PageTitle>
+
+@inject BlazorIW.Client.Services.FileService FileService
+
+<h1>Files under wwwroot</h1>
+
+@if (fileNames == null)
+{
+    <p>Loading...</p>
+}
+else if (!fileNames.Any())
+{
+    <p>No files found.</p>
+}
+else
+{
+    <ul>
+        @foreach (var file in fileNames)
+        {
+            <li>@file</li>
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<string>? fileNames;
+
+    protected override async Task OnInitializedAsync()
+    {
+        fileNames = await FileService.GetFilesAsync();
+    }
+}
