@@ -1,5 +1,3 @@
-# Dockerfile.render
-
 # 1) Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
@@ -21,17 +19,24 @@ RUN dotnet workload install wasm-tools \
 
 # 1.d) Publish (with implicit restore)
 WORKDIR /app/BlazorIW
-RUN dotnet publish \
-    -c Release \
-    -o ../out \
-    -v q
+RUN dotnet publish -c Release -o ../out -v q
 
 # 2) Runtime Stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
+# Copy published output
 COPY --from=build /app/out .
 
-EXPOSE 8080
-ENV ASPNETCORE_URLS=http://+:8080
+# Use Render's PORT env var (default 8080) for listening
+ARG PORT=8080
+ENV PORT=${PORT}
+EXPOSE ${PORT}
+ENV ASPNETCORE_URLS=http://+:${PORT}
+
+# Enable development mode & detailed errors (temporarily)
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_DETAILEDERRORS=true
+
+# Start the Blazor host
 ENTRYPOINT ["dotnet", "BlazorIW.dll"]

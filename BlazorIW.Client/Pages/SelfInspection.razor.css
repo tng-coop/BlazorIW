@@ -1,0 +1,7 @@
+#maindiv {
+    width: calc(100vw - 350px);
+}
+.table {
+   word-wrap: break-word ;
+   word-break: break-all;
+}

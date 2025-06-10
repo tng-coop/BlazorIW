@@ -8,6 +8,10 @@ using BlazorIW.Services;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using BlazorIW.Client.Services;
 
+const int WaterfallVideoId = 6394054;
+const int GoatVideoId = 30646036;
+var isDatabaseAvailable = true;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -85,6 +89,135 @@ app.UseHttpsRedirection();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
+
+
+app.MapGet("/api/waterfall-video-info", async (ApplicationDbContext db, PexelsClient client, CancellationToken ct) =>
+{
+    if (isDatabaseAvailable)
+    {
+        try
+        {
+            var info = await db.BackgroundVideos.FirstOrDefaultAsync(v => v.Name == "waterfall", ct);
+            if (info is not null)
+            {
+                return Results.Json(new { url = info.Url, poster = info.Poster });
+            }
+        }
+        catch
+        {
+            // fall back to Pexels
+        }
+    }
+
+    var videoInfo = await client.GetVideoInfoAsync(WaterfallVideoId, ct);
+    return Results.Json(new { url = videoInfo.Url, poster = videoInfo.Poster });
+});
+
+app.MapGet("/api/waterfall-video-url", async (ApplicationDbContext db, PexelsClient client, CancellationToken ct) =>
+{
+    if (isDatabaseAvailable)
+    {
+        try
+        {
+            var info = await db.BackgroundVideos.FirstOrDefaultAsync(v => v.Name == "waterfall", ct);
+            if (info is not null)
+            {
+                return Results.Json(new { url = info.Url });
+            }
+        }
+        catch
+        {
+            // fall back to Pexels
+        }
+    }
+
+    var url = await client.GetVideoUrlAsync(WaterfallVideoId, ct);
+    return Results.Json(new { url });
+});
+
+app.MapGet("/api/goat-video-url", async (ApplicationDbContext db, PexelsClient client, CancellationToken ct) =>
+{
+    if (isDatabaseAvailable)
+    {
+        try
+        {
+            var info = await db.BackgroundVideos.FirstOrDefaultAsync(v => v.Name == "goat", ct);
+            if (info is not null)
+            {
+                return Results.Json(new { url = info.Url });
+            }
+        }
+        catch
+        {
+            // fall back to Pexels
+        }
+    }
+
+    var url = await client.GetVideoUrlAsync(GoatVideoId, ct);
+    return Results.Json(new { url });
+});
+
+app.MapGet("/api/ef-model", async (ApplicationDbContext db) =>
+{
+    var entityModels = new List<object>();
+
+    foreach (var e in db.Model.GetEntityTypes())
+    {
+        var properties = e.GetProperties()
+            .Select(p => new { Name = p.Name, Type = p.ClrType.Name })
+            .ToList();
+        var navigations = e.GetNavigations()
+            .Select(n => new { Name = n.Name, Target = n.TargetEntityType.ClrType.Name })
+            .ToList();
+
+        var rows = new List<Dictionary<string, string?>>();
+        try
+        {
+            var rowObjects = await db.GetQueryable(e.ClrType).Take(5).ToListAsync();
+            foreach (var obj in rowObjects)
+            {
+                var dict = new Dictionary<string, string?>();
+                foreach (var prop in e.GetProperties())
+                {
+                    var value = prop.PropertyInfo?.GetValue(obj);
+                    dict[prop.Name] = value?.ToString();
+                }
+                rows.Add(dict);
+            }
+        }
+        catch
+        {
+            // ignore errors when fetching sample data
+        }
+
+        entityModels.Add(new
+        {
+            Name = e.ClrType.Name,
+            Properties = properties,
+            Navigations = navigations,
+            Rows = rows
+        });
+    }
+
+    return Results.Json(entityModels);
+});
+
+app.MapPost("/api/upload-test", async (HttpContext context) =>
+{
+    long count = 0;
+    var buffer = new byte[16 * 1024];
+    int read;
+    while ((read = await context.Request.Body.ReadAsync(buffer, context.RequestAborted)) > 0)
+    {
+        count += read;
+    }
+    return Results.Json(new { received = count });
+}).DisableAntiforgery();
+
+
+
+
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(BlazorIW.Client._Imports).Assembly);
