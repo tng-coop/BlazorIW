@@ -68,14 +68,30 @@ else if (posts != null)
                 {
                     var title = p.GetProperty("title").GetProperty("rendered").GetString() ?? string.Empty;
                     var json = JsonSerializer.Serialize(p, new JsonSerializerOptions { WriteIndented = true });
+                    var exists = existingTitles.Contains(title.Trim());
                     <tr>
-                        <td>@(existingTitles.Contains(title.Trim()) ? "✔" : "✖")</td>
+                        <td>
+                            @if (exists)
+                            {
+                                <span>✔</span>
+                            }
+                            else
+                            {
+                                <span>✖</span>
+                                <button class="btn btn-sm btn-primary ms-2" @onclick="() => DownloadPost(p)">Download</button>
+                            }
+                        </td>
                         <td><pre>@json</pre></td>
                     </tr>
                 }
             </tbody>
         </table>
     }
+}
+
+@if (!string.IsNullOrEmpty(infoMessage))
+{
+    <p class="text-success mt-3">@infoMessage</p>
 }
 
 @code {
@@ -86,6 +102,7 @@ else if (posts != null)
     private List<JsonElement>? posts;
     private bool isLoading;
     private string? errorMessage;
+    private string? infoMessage;
     private bool showSummary;
     private HashSet<string> existingTitles = new();
 
@@ -167,11 +184,33 @@ else if (posts != null)
             return;
         }
 
+        infoMessage = null;
         var list = Summaries?.Select(s => new ImportPostDto(s.Date, s.Title, s.Excerpt, s.Content)).ToList() ?? new();
         try
         {
-            await HtmlSvc.ImportPostsAsync(list);
+            var added = await HtmlSvc.ImportPostsAsync(list);
             existingTitles = await HtmlSvc.GetTitlesAsync();
+            infoMessage = $"Imported {added} post(s).";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private async Task DownloadPost(JsonElement post)
+    {
+        infoMessage = null;
+        var dto = new ImportPostDto(
+            post.GetProperty("date").GetString() ?? string.Empty,
+            post.GetProperty("title").GetProperty("rendered").GetString() ?? string.Empty,
+            post.GetProperty("excerpt").GetProperty("rendered").GetString() ?? string.Empty,
+            post.GetProperty("content").GetProperty("rendered").GetString() ?? string.Empty);
+        try
+        {
+            var added = await HtmlSvc.ImportPostsAsync(new[] { dto });
+            existingTitles = await HtmlSvc.GetTitlesAsync();
+            infoMessage = $"Imported {added} post(s).";
         }
         catch (Exception ex)
         {
