@@ -242,14 +242,17 @@ app.MapGet("/api/html-content-titles", async (ApplicationDbContext db, Cancellat
     return Results.Json(titles);
 });
 
-app.MapPost("/api/import-html-content", async (ApplicationDbContext db, IEnumerable<ImportPostDto> posts, CancellationToken ct) =>
+app.MapPost("/api/import-html-content", async (ILogger<Program> logger, ApplicationDbContext db, IEnumerable<ImportPostDto> posts, CancellationToken ct) =>
 {
+    var postList = posts.ToList();
+    logger.LogInformation("Received import request for {Count} posts", postList.Count);
     var existing = await db.HtmlContents.Select(h => h.Title).ToListAsync(ct);
     var added = 0;
-    foreach (var p in posts)
+    foreach (var p in postList)
     {
         if (existing.Contains(p.Title))
         {
+            logger.LogInformation("Skipping existing post with title '{Title}'", p.Title);
             continue;
         }
 
@@ -270,9 +273,11 @@ app.MapPost("/api/import-html-content", async (ApplicationDbContext db, IEnumera
 
     if (added > 0)
     {
+        logger.LogInformation("Saving {Count} new posts", added);
         await db.SaveChangesAsync(ct);
     }
 
+    logger.LogInformation("Import complete. Added {Count} posts", added);
     return Results.Json(new { added });
 }).DisableAntiforgery();
 
