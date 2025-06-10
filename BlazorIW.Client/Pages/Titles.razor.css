@@ -1,0 +1,29 @@
+.title-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0.25rem 0;
+    font-size: 1rem;
+    color: var(--bs-link-color);
+}
+
+.title-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.excerpt-container {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.excerpt-container.expanded {
+    max-height: 1000px; /* large enough for content */
+    opacity: 1;
+    margin-bottom: 0.5rem;
+}
+
