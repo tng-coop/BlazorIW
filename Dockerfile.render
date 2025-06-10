@@ -2,30 +2,40 @@
 
 # 1) Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
+# 1.a) Set the root and copy only the host project file for a cached restore
+WORKDIR /app/BlazorIW
+COPY BlazorIW/BlazorIW.csproj ./
+
+# 1.b) Restore NuGet for that project
+RUN dotnet restore
+
+# 1.c) Copy the rest of your source into the build context
 WORKDIR /app
 COPY . .
 
-# 1.a) Install the Blazor/WASM linker (wasm-tools) so trimming happens
-RUN dotnet workload install wasm-tools
+# 1.d) Install the Blazor/WASM linker (wasm-tools) & Python for the build
+RUN dotnet workload install wasm-tools \
+ && apt-get update \
+ && apt-get install -y python3 \
+ && ln -sf /usr/bin/python3 /usr/bin/python \
+ && rm -rf /var/lib/apt/lists/*
 
-# 1.b) Install Python3 (required by the WASM build pipeline) and create a “python” symlink
-RUN apt-get update \
-    && apt-get install -y python3 \
-    && ln -sf /usr/bin/python3 /usr/bin/python \
-    && rm -rf /var/lib/apt/lists/*
-
-# 1.c) (Optional) Ensure the .NET global tools folder is on PATH 
-#     (You already had this—but the ordering doesn’t strictly matter.)
-ENV PATH="${PATH}:/root/.dotnet/tools"
-
-# 1.d) Restore & Publish in Release
-RUN dotnet restore
-RUN dotnet publish -c Release -o out
+# 1.e) Publish from the project subfolder, outputting into /app/out
+WORKDIR /app/BlazorIW
+RUN dotnet publish \
+    -c Release \
+    -o ../out \
+    --no-restore \
+    -v q
 
 # 2) Runtime Stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
+
+# Copy only the published output
 COPY --from=build /app/out .
+
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
 ENTRYPOINT ["dotnet", "BlazorIW.dll"]
