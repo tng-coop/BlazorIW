@@ -20,4 +20,23 @@ public class FileService(HttpClient httpClient, NavigationManager navigationMana
         return await _httpClient.GetFromJsonAsync<IEnumerable<WebRootFileInfo>>("api/files")
             ?? Enumerable.Empty<WebRootFileInfo>();
     }
+
+    public async Task<bool> IsFileAccessibleAsync(string path)
+    {
+        if (_httpClient.BaseAddress is null)
+        {
+            _httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
+        }
+
+        try
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Head, path);
+            using var response = await _httpClient.SendAsync(request);
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }
