@@ -23,12 +23,8 @@ case "$(whoami)" in
     HTTP_BASE=5000
     HTTPS_BASE=5010
     ;;
-  akihiko)
-    HTTP_BASE=5020
-    HTTPS_BASE=5030
-    ;;
   *)
-    echo "Error: unsupported user '$(whoami)'. Supported: yasu, akihiko."
+    echo "Error: unsupported user '$(whoami)'. Supported: yasu."
     exit 1
     ;;
 esac
@@ -49,7 +45,8 @@ export Kestrel__Endpoints__Https__Url="https://aspnet.lan:${HTTPS_PORT}"
 # --- write into user-secrets (run inside the project directory)
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "$ConnectionStrings__DefaultConnection"
 dotnet user-secrets set "Kestrel:Endpoints:Http:Url"    "$Kestrel__Endpoints__Http__Url"
-dotnet user-secrets set "Kestrel:Endpoints:Https:Url"   "$Kestrel__Endpoints__Https__Url"
+dotnet user-secrets set "Kestrel:Endpoints:Https:Certificate:Path"   "../cert/aspnet.lan.pfx"
+dotnet user-secrets set "Kestrel:Endpoints:Https:Certificate:Password"   "yourpassword"
 
 # --- feedback
 echo "🔄 Configured for:"

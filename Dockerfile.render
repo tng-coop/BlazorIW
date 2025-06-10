@@ -35,7 +35,7 @@ EXPOSE ${PORT}
 ENV ASPNETCORE_URLS=http://+:${PORT}
 
 # Enable development mode & detailed errors (temporarily)
-ENV ASPNETCORE_ENVIRONMENT=Temporarily
+ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_DETAILEDERRORS=true
 
 # Start the Blazor host
