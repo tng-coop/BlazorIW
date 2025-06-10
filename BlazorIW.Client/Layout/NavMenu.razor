@@ -1,6 +1,8 @@
 ﻿@implements IDisposable
 
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using Microsoft.AspNetCore.Components.Authorization
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -70,7 +72,7 @@
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
             </NavLink>
         </div>
-        @if (NavigationManager.Uri.Contains("/Account", StringComparison.OrdinalIgnoreCase))
+        @if (NavigationManager.Uri.Contains("/Account", StringComparison.OrdinalIgnoreCase) || isAuthenticated)
         {
             <AuthorizeView>
                 <Authorized>
@@ -109,10 +111,27 @@
 @code {
     private string? currentUrl;
 
-    protected override void OnInitialized()
+    private bool isAuthenticated;
+
+    protected override async Task OnInitializedAsync()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
+        await UpdateAuthenticationStateAsync();
+    }
+
+    private async Task UpdateAuthenticationStateAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+    }
+
+    private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        var state = await task;
+        isAuthenticated = state.User.Identity?.IsAuthenticated ?? false;
+        StateHasChanged();
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -124,5 +143,6 @@
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
+        AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }
