@@ -507,15 +507,15 @@ Uploader/images/*.mp4
 /dumps/*.sql
 
 
-BlazorHybridApp/a.sh
+BlazorIW/a.sh
 /a.sh
 /a.patch
 
 filecache
 
-/BlazorHybridApp/wwwroot/dist/*
-/BlazorHybridApp/wwwroot/lib/tinymce/*
-/BlazorHybridApp/wwwroot/lib/bootstrap-icons/*
+/BlazorIW/wwwroot/dist/*
+/BlazorIW/wwwroot/lib/tinymce/*
+/BlazorIW/wwwroot/lib/bootstrap-icons/*
 
 /MyMudServerApp/*
-BlazorHybridApp/Data/app.db
+BlazorIW/Data/app.db
