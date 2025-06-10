@@ -32,14 +32,14 @@ done
 chmod +x "$scriptdir/reset-db.sh"
 "$scriptdir/reset-db.sh"
 
-## Run xUnit tests explicitly before starting the app
-#cd "$scriptdir/../BlazorIW.Tests"
-#if dotnet test; then
-#    echo "✅ xUnit tests passed."
-#else
-#    echo "❌ xUnit tests failed."
-#    cleanup 1
-#fi
+# Run xUnit tests explicitly before starting the app
+cd "$scriptdir/../BlazorIW.Tests"
+if dotnet test; then
+   echo "✅ xUnit tests passed."
+else
+   echo "❌ xUnit tests failed."
+   cleanup 1
+fi
 
 cd "$scriptdir/../BlazorIW"
 
