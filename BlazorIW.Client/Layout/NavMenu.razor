@@ -74,6 +74,13 @@
         {
             <AuthorizeView>
                 <Authorized>
+                    <AuthorizeView Roles="admin">
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="Account/Admin/Users">
+                                <span class="bi bi-person-gear-nav-menu" aria-hidden="true"></span> Admin
+                            </NavLink>
+                        </div>
+                    </AuthorizeView>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="Account/Manage">
                             <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name

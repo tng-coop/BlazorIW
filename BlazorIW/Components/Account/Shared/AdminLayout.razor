@@ -1,0 +1,17 @@
+@inherits LayoutComponentBase
+@layout BlazorIW.Client.Layout.MainLayout
+
+<h1>Administration</h1>
+
+<div>
+    <h2>Account management</h2>
+    <hr />
+    <div class="row">
+        <div class="col-lg-3">
+            <AdminNavMenu />
+        </div>
+        <div class="col-lg-9">
+            @Body
+        </div>
+    </div>
+</div>
