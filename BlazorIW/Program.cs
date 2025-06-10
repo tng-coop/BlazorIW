@@ -45,9 +45,11 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityEmailSender>();
 builder.Services.AddHttpClient<PexelsClient>();
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<LocalizationService>();
 builder.Services.AddScoped<WebRootFileService>();
+builder.Services.AddScoped<FileService>();
 
 var app = builder.Build();
 
