@@ -274,7 +274,7 @@ app.MapPost("/api/import-html-content", async (ApplicationDbContext db, IEnumera
     }
 
     return Results.Json(new { added });
-});
+}).DisableAntiforgery();
 
 app.MapGet("/api/files", (WebRootFileService service) => Results.Json(service.GetFiles().ToList()));
 
