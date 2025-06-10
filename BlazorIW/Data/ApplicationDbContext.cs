@@ -13,5 +13,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(builder);
         builder.Entity<HtmlContentRevision>().HasKey(h => new { h.Id, h.Revision });
+        builder.Entity<HtmlContentRevision>()
+            .HasIndex(h => new { h.Id, h.IsReviewRequested })
+            .IsUnique()
+            .HasFilter("\"IsReviewRequested\" = TRUE");
+        builder.Entity<HtmlContentRevision>()
+            .HasIndex(h => new { h.Id, h.IsPublished })
+            .IsUnique()
+            .HasFilter("\"IsPublished\" = TRUE");
     }
 }

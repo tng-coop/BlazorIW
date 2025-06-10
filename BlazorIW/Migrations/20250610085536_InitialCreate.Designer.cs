@@ -140,7 +140,23 @@ namespace BlazorIW.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsReviewRequested")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id", "Revision");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasFilter("\"IsReviewRequested\" = TRUE")
+                        .HasDatabaseName("IX_HtmlContents_IsReviewRequested");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasFilter("\"IsPublished\" = TRUE")
+                        .HasDatabaseName("IX_HtmlContents_IsPublished");
 
                     b.ToTable("HtmlContents");
                 });
