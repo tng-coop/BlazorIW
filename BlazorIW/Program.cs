@@ -242,6 +242,43 @@ app.MapGet("/api/html-content-titles", async (ApplicationDbContext db, Cancellat
     return Results.Json(titles);
 });
 
+app.MapPost("/api/import-html-content", async (ApplicationDbContext db, IEnumerable<ImportPostDto> posts, CancellationToken ct) =>
+{
+    var existing = await db.HtmlContents.Select(h => h.Title).ToListAsync(ct);
+    var added = 0;
+    foreach (var p in posts)
+    {
+        if (existing.Contains(p.Title))
+        {
+            continue;
+        }
+
+        var date = DateTime.TryParse(p.Date, out var d) ? d : DateTime.UtcNow;
+        db.HtmlContents.Add(new HtmlContentRevision
+        {
+            Id = Guid.NewGuid(),
+            Revision = 1,
+            Date = date,
+            Title = p.Title,
+            Excerpt = p.Excerpt,
+            Content = p.Content,
+            IsPublished = true
+        });
+        existing.Add(p.Title);
+        added++;
+    }
+
+    if (added > 0)
+    {
+        await db.SaveChangesAsync(ct);
+    }
+
+    return Results.Json(new { added });
+});
+
 app.MapGet("/api/files", (WebRootFileService service) => Results.Json(service.GetFiles().ToList()));
 
 app.Run();
+
+record ImportPostDto(string Date, string Title, string Excerpt, string Content);
+

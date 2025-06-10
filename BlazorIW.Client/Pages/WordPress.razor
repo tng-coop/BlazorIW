@@ -18,6 +18,7 @@
 <button class="btn btn-secondary mb-3 ms-2" @onclick="ToggleSummary" disabled="@(posts is null)">
     @(showSummary ? "Show JSON" : "Show Summary")
 </button>
+<button class="btn btn-success mb-3 ms-2" @onclick="ImportPosts" disabled="@(posts is null)">Import Posts</button>
 
 @if (isLoading)
 {
@@ -157,5 +158,24 @@ else if (posts != null)
     private void ToggleSummary()
     {
         showSummary = !showSummary;
+    }
+
+    private async Task ImportPosts()
+    {
+        if (posts is null)
+        {
+            return;
+        }
+
+        var list = Summaries?.Select(s => new ImportPostDto(s.Date, s.Title, s.Excerpt, s.Content)).ToList() ?? new();
+        try
+        {
+            await HtmlSvc.ImportPostsAsync(list);
+            existingTitles = await HtmlSvc.GetTitlesAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
     }
 }
