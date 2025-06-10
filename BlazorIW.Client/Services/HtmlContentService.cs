@@ -18,11 +18,13 @@ public class HtmlContentService(HttpClient httpClient, NavigationManager navigat
         try
         {
             var titles = await _httpClient.GetFromJsonAsync<List<string>>("api/html-content-titles");
-            return titles is null ? new HashSet<string>() : new HashSet<string>(titles);
+            return titles is null
+                ? new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                : new HashSet<string>(titles.Select(t => t.Trim()), StringComparer.OrdinalIgnoreCase);
         }
         catch
         {
-            return new HashSet<string>();
+            return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
     }
 
