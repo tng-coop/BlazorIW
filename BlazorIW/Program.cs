@@ -4,6 +4,7 @@ using BlazorIW.Client.Pages;
 using BlazorIW.Components;
 using BlazorIW.Components.Account;
 using BlazorIW.Data;
+using BlazorIWApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,25 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 var app = builder.Build();
+
+var defaultUserPassword = builder.Configuration["DefaultUser:Password"];
+if (string.IsNullOrWhiteSpace(defaultUserPassword))
+{
+    throw new InvalidOperationException("DefaultUser__Password environment variable must be set.");
+}
+
+
+// Attempt to initialize the database; continue even if it fails
+using (var scope = app.Services.CreateScope())
+{
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.EnsureCreated();
+        DataSeeder.SeedBackgroundVideosAsync(scope.ServiceProvider).GetAwaiter().GetResult();
+        DataSeeder.SeedHtmlContentsAsync(scope.ServiceProvider).GetAwaiter().GetResult();
+        DataSeeder.SeedBranchOfficeContentsAsync(scope.ServiceProvider).GetAwaiter().GetResult();
+        DataSeeder.SeedDefaultUsersAsync(scope.ServiceProvider, defaultUserPassword).GetAwaiter().GetResult();
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
