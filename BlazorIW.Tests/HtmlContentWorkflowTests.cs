@@ -3,6 +3,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using BlazorIW.Data;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace BlazorIW.Tests;
 
@@ -72,7 +73,7 @@ public class HtmlContentWorkflowTests
     }
 
     [Fact]
-    public void Can_request_review_after_clearing_previous()
+    public async Task Can_request_review_after_clearing_previous()
     {
         using var connection = CreateConnection();
         using var context = CreateContext(connection);
@@ -89,6 +90,6 @@ public class HtmlContentWorkflowTests
         context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 3, Html = "R3", IsReviewRequested = true });
         context.SaveChanges();
 
-        Assert.Equal(3, context.HtmlContents.CountAsync().Result);
+        Assert.Equal(3, await context.HtmlContents.CountAsync());
     }
 }
