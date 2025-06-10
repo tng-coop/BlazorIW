@@ -85,27 +85,13 @@ namespace BlazorIW.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Revision = table.Column<int>(type: "integer", nullable: false),
                     Html = table.Column<string>(type: "text", nullable: false),
-                    IsReviewRequested = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    IsPublished = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                    IsReviewRequested = table.Column<bool>(type: "boolean", nullable: false),
+                    IsPublished = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HtmlContents", x => new { x.Id, x.Revision });
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HtmlContents_IsReviewRequested",
-                table: "HtmlContents",
-                column: "Id",
-                unique: true,
-                filter: "\"IsReviewRequested\" = TRUE");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HtmlContents_IsPublished",
-                table: "HtmlContents",
-                column: "Id",
-                unique: true,
-                filter: "\"IsPublished\" = TRUE");
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
@@ -249,6 +235,20 @@ namespace BlazorIW.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HtmlContents_Id_IsPublished",
+                table: "HtmlContents",
+                columns: new[] { "Id", "IsPublished" },
+                unique: true,
+                filter: "\"IsPublished\" = TRUE");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HtmlContents_Id_IsReviewRequested",
+                table: "HtmlContents",
+                columns: new[] { "Id", "IsReviewRequested" },
+                unique: true,
+                filter: "\"IsReviewRequested\" = TRUE");
         }
 
         /// <inheritdoc />
