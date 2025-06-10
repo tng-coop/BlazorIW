@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 
 namespace BlazorIW.Services;
 
-public record WebRootFileInfo(string Path, string Attributes);
+public record WebRootFileInfo(string Path, string Owner, string Permissions);
 
 public class WebRootFileService(IWebHostEnvironment env)
 {
@@ -24,20 +26,50 @@ public class WebRootFileService(IWebHostEnvironment env)
             else
             {
                 var filePath = Path.Combine(path, entry.Name).Replace("\\", "/");
-                var attributes = "Unavailable";
+                var owner = "Unavailable";
+                var permissions = "Unavailable";
                 if (!string.IsNullOrEmpty(entry.PhysicalPath))
                 {
                     try
                     {
-                        attributes = File.GetAttributes(entry.PhysicalPath).ToString();
+                        var info = new FileInfo(entry.PhysicalPath);
+                        owner = info.GetAccessControl()
+                            .GetOwner(typeof(NTAccount))
+                            .ToString();
+
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            permissions = info.Attributes.ToString();
+                        }
+                        else
+                        {
+                            var mode = File.GetUnixFileMode(entry.PhysicalPath);
+                            permissions = UnixModeToString(mode);
+                        }
                     }
                     catch
                     {
-                        attributes = "Unavailable";
+                        owner = "Unavailable";
+                        permissions = "Unavailable";
                     }
                 }
-                yield return new WebRootFileInfo(filePath, attributes);
+                yield return new WebRootFileInfo(filePath, owner, permissions);
             }
         }
+    }
+
+    private static string UnixModeToString(UnixFileMode mode)
+    {
+        Span<char> chars = stackalloc char[9];
+        chars[0] = (mode & UnixFileMode.UserRead) != 0 ? 'r' : '-';
+        chars[1] = (mode & UnixFileMode.UserWrite) != 0 ? 'w' : '-';
+        chars[2] = (mode & UnixFileMode.UserExecute) != 0 ? 'x' : '-';
+        chars[3] = (mode & UnixFileMode.GroupRead) != 0 ? 'r' : '-';
+        chars[4] = (mode & UnixFileMode.GroupWrite) != 0 ? 'w' : '-';
+        chars[5] = (mode & UnixFileMode.GroupExecute) != 0 ? 'x' : '-';
+        chars[6] = (mode & UnixFileMode.OtherRead) != 0 ? 'r' : '-';
+        chars[7] = (mode & UnixFileMode.OtherWrite) != 0 ? 'w' : '-';
+        chars[8] = (mode & UnixFileMode.OtherExecute) != 0 ? 'x' : '-';
+        return new string(chars);
     }
 }
