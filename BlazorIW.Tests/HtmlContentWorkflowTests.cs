@@ -37,7 +37,10 @@ public class HtmlContentWorkflowTests
         {
             Id = id,
             Revision = 1,
-            Html = "A",
+            Date = DateTime.UtcNow,
+            Title = "A",
+            Excerpt = "A",
+            Content = "A",
             IsPublished = true
         });
         context.SaveChanges();
@@ -46,7 +49,10 @@ public class HtmlContentWorkflowTests
         {
             Id = id,
             Revision = 2,
-            Html = "B",
+            Date = DateTime.UtcNow,
+            Title = "B",
+            Excerpt = "B",
+            Content = "B",
             IsPublished = true
         });
 
@@ -60,14 +66,14 @@ public class HtmlContentWorkflowTests
         using var context = CreateContext(connection);
 
         var id = Guid.NewGuid();
-        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 1, Html = "R1" });
+        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 1, Date = DateTime.UtcNow, Title = "R1", Excerpt = "R1", Content = "R1" });
         context.SaveChanges();
 
-        var rev2 = new HtmlContentRevision { Id = id, Revision = 2, Html = "R2", IsReviewRequested = true };
+        var rev2 = new HtmlContentRevision { Id = id, Revision = 2, Date = DateTime.UtcNow, Title = "R2", Excerpt = "R2", Content = "R2", IsReviewRequested = true };
         context.HtmlContents.Add(rev2);
         context.SaveChanges();
 
-        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 3, Html = "R3", IsReviewRequested = true });
+        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 3, Date = DateTime.UtcNow, Title = "R3", Excerpt = "R3", Content = "R3", IsReviewRequested = true });
 
         Assert.Throws<DbUpdateException>(() => context.SaveChanges());
     }
@@ -79,15 +85,15 @@ public class HtmlContentWorkflowTests
         using var context = CreateContext(connection);
 
         var id = Guid.NewGuid();
-        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 1, Html = "R1" });
-        var rev2 = new HtmlContentRevision { Id = id, Revision = 2, Html = "R2", IsReviewRequested = true };
+        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 1, Date = DateTime.UtcNow, Title = "R1", Excerpt = "R1", Content = "R1" });
+        var rev2 = new HtmlContentRevision { Id = id, Revision = 2, Date = DateTime.UtcNow, Title = "R2", Excerpt = "R2", Content = "R2", IsReviewRequested = true };
         context.HtmlContents.Add(rev2);
         context.SaveChanges();
 
         rev2.IsReviewRequested = false;
         context.SaveChanges();
 
-        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 3, Html = "R3", IsReviewRequested = true });
+        context.HtmlContents.Add(new HtmlContentRevision { Id = id, Revision = 3, Date = DateTime.UtcNow, Title = "R3", Excerpt = "R3", Content = "R3", IsReviewRequested = true });
         context.SaveChanges();
 
         Assert.Equal(3, await context.HtmlContents.CountAsync());

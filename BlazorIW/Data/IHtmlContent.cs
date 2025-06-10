@@ -2,7 +2,10 @@ namespace BlazorIW.Data;
 
 public interface IHtmlContent
 {
-    string Html { get; set; }
+    DateTime Date { get; set; }
+    string Title { get; set; }
+    string Excerpt { get; set; }
+    string Content { get; set; }
     bool IsReviewRequested { get; set; }
     bool IsPublished { get; set; }
 }
