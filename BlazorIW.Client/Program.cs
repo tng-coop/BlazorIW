@@ -13,6 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<FileService>();
 builder.Services.AddScoped<BrowserStorageService>();
 builder.Services.AddScoped<WordPressService>();
+builder.Services.AddScoped<HtmlContentService>();
 builder.Services.AddScoped<LocalizationService>();
 
 // Register Counter component as custom element <my-counter>
