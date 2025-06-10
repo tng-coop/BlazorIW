@@ -6,6 +6,7 @@ using BlazorIW.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using BlazorIW.Services;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Mvc;
 using BlazorIW.Client.Services;
 
 const int WaterfallVideoId = 6394054;
@@ -242,13 +243,16 @@ app.MapGet("/api/html-content-titles", async (ApplicationDbContext db, Cancellat
     return Results.Json(titles);
 });
 
-app.MapPost("/api/import-html-content", async (ILogger<Program> logger, ApplicationDbContext db, IEnumerable<ImportPostDto> posts, CancellationToken ct) =>
+app.MapPost("/api/import-html-content", async (ILogger<Program> logger, ApplicationDbContext db, [FromBody] List<ImportPostDto> posts, CancellationToken ct) =>
 {
-    var postList = posts.ToList();
-    logger.LogInformation("Received import request for {Count} posts", postList.Count);
+    logger.LogInformation("Received import request for {Count} posts", posts.Count);
+    foreach (var post in posts)
+    {
+        logger.LogInformation("Received post titled '{Title}'", post.Title);
+    }
     var existing = await db.HtmlContents.Select(h => h.Title).ToListAsync(ct);
     var added = 0;
-    foreach (var p in postList)
+    foreach (var p in posts)
     {
         if (existing.Contains(p.Title))
         {
