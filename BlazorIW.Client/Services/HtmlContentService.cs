@@ -25,4 +25,20 @@ public class HtmlContentService(HttpClient httpClient, NavigationManager navigat
             return new HashSet<string>();
         }
     }
+
+    public async Task<int> ImportPostsAsync(IEnumerable<ImportPostDto> posts)
+    {
+        if (_httpClient.BaseAddress is null)
+        {
+            _httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
+        }
+
+        var response = await _httpClient.PostAsJsonAsync("api/import-html-content", posts);
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadFromJsonAsync<ImportResult>();
+        return result?.Added ?? 0;
+    }
 }
+
+public record ImportPostDto(string Date, string Title, string Excerpt, string Content);
+public record ImportResult(int Added);
