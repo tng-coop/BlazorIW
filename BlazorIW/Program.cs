@@ -260,7 +260,9 @@ app.MapPost("/api/import-html-content", async (ILogger<Program> logger, Applicat
             continue;
         }
 
-        var date = DateTime.TryParse(p.Date, out var d) ? d : DateTime.UtcNow;
+        var date = DateTimeOffset.TryParse(p.Date, out var dto)
+            ? dto.UtcDateTime
+            : DateTime.UtcNow;
         db.HtmlContents.Add(new HtmlContentRevision
         {
             Id = Guid.NewGuid(),
