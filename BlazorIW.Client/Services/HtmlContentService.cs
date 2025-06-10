@@ -70,8 +70,28 @@ public class HtmlContentService(HttpClient httpClient, NavigationManager navigat
             return new List<HtmlContentDto>();
         }
     }
+
+    public async Task SetStatusAsync(Guid id, int revision, HtmlContentStatus status)
+    {
+        if (_httpClient.BaseAddress is null)
+        {
+            _httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
+        }
+
+        var dto = new UpdateStatusDto(id, revision, status.ToString());
+        var response = await _httpClient.PostAsJsonAsync("api/html-content-status", dto);
+        response.EnsureSuccessStatusCode();
+    }
 }
 
 public record ImportPostDto(string Date, string Title, string Excerpt, string Content);
 public record ImportResult(int Added);
 public record HtmlContentDto(Guid Id, int Revision, DateTime Date, string Title, string Excerpt, string Content, bool IsReviewRequested, bool IsPublished);
+public record UpdateStatusDto(Guid Id, int Revision, string Status);
+
+public enum HtmlContentStatus
+{
+    Draft,
+    Review,
+    Published
+}

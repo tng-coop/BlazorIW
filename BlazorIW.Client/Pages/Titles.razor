@@ -42,6 +42,14 @@ else
                             </div>
                             <button class="btn btn-sm btn-secondary me-1" @onclick="() => ShowFull(item.Id)">Show Full</button>
                         }
+                        <div class="mb-2">Status: @GetStatusValue(item)</div>
+                        <AuthorizeView Roles="admin">
+                            <select class="form-select form-select-sm w-auto mb-2" value="@GetStatusValue(item)" @onchange="async e => await ChangeStatusAsync(item, e.Value?.ToString())">
+                                <option value="Draft">Draft</option>
+                                <option value="Review">Review</option>
+                                <option value="Published">Published</option>
+                            </select>
+                        </AuthorizeView>
                         <button class="btn btn-sm btn-outline-secondary" @onclick="() => Collapse(item.Id)">Collapse</button>
                     }
                 </div>
@@ -103,6 +111,28 @@ else
             state.Expanded = false;
             state.ShowFull = false;
         }
+    }
+
+    private static string GetStatusValue(HtmlContentDto item)
+        => item.IsPublished ? "Published" : item.IsReviewRequested ? "Review" : "Draft";
+
+    private async Task ChangeStatusAsync(HtmlContentDto item, string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return;
+        }
+
+        var status = value switch
+        {
+            "Published" => HtmlContentStatus.Published,
+            "Review" => HtmlContentStatus.Review,
+            _ => HtmlContentStatus.Draft
+        };
+
+        await HtmlSvc.SetStatusAsync(item.Id, item.Revision, status);
+        item.IsPublished = status == HtmlContentStatus.Published;
+        item.IsReviewRequested = status == HtmlContentStatus.Review;
     }
 
     private class ItemState
