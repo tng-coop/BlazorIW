@@ -6,6 +6,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorIW", "BlazorIW\Blazor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorIW.Client", "BlazorIW.Client\BlazorIW.Client.csproj", "{CDB253F5-E8FB-4D76-85AE-504147624D7F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorIW.Tests", "BlazorIW.Tests\BlazorIW.Tests.csproj", "{A08809B1-05F8-4048-ACDE-F38B6468872F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +39,22 @@ Global
 		{C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|x64.ActiveCfg = Release|Any CPU
-		{C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|x64.Build.0 = Release|Any CPU
-		{C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|x86.ActiveCfg = Release|Any CPU
-		{C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|x86.Build.0 = Release|Any CPU
-	EndGlobalSection
+                {C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|x64.Build.0 = Release|Any CPU
+                {C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|x86.ActiveCfg = Release|Any CPU
+                {C66B50FC-62B0-4B73-A9AE-62A91C7310FF}.Release|x86.Build.0 = Release|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Debug|x64.ActiveCfg = Debug|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Debug|x64.Build.0 = Debug|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Debug|x86.ActiveCfg = Debug|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Debug|x86.Build.0 = Debug|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Release|Any CPU.Build.0 = Release|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Release|x64.ActiveCfg = Release|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Release|x64.Build.0 = Release|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Release|x86.ActiveCfg = Release|Any CPU
+                {A08809B1-05F8-4048-ACDE-F38B6468872F}.Release|x86.Build.0 = Release|Any CPU
+        EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
