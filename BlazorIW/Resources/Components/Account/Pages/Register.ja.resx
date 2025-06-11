@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Register" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="Create a new account." xml:space="preserve">
+    <value>新しいアカウントを作成します。</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>メールアドレス</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="Confirm Password" xml:space="preserve">
+    <value>パスワードの確認</value>
+  </data>
+  <data name="Use another service to register." xml:space="preserve">
+    <value>別のサービスで登録</value>
+  </data>
+</root>

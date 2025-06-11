@@ -8,6 +8,7 @@ using BlazorIW.Services;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using BlazorIW.Client.Services;
+using Microsoft.AspNetCore.Localization;
 
 const int WaterfallVideoId = 6394054;
 const int GoatVideoId = 30646036;
@@ -16,6 +17,7 @@ var isDatabaseAvailable = true;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents()
     .AddAuthenticationStateSerialization();
@@ -92,6 +94,13 @@ else
 }
 
 app.UseHttpsRedirection();
+
+var supportedCultures = new[] { "en", "ja" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("en")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+app.UseRequestLocalization(localizationOptions);
 
 // Serve files from wwwroot for environments where MapStaticAssets might not
 // register the middleware correctly (e.g., certain container hosts).
