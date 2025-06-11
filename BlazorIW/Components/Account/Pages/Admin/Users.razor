@@ -71,7 +71,7 @@ else
                             <div class="btn-group" role="group">
                                 @if (info.Role == "admin")
                                 {
-                                <form method="post" @formname=$"demote-@info.User.Id" @onsubmit='() => ChangeRoleAsync(info, "editor")' style="display:inline">
+                                <form method="post" @formname="@($"demote-{info.User.Id}")" @onsubmit='() => ChangeRoleAsync(info, "editor")' style="display:inline">
                                         <AntiforgeryToken />
                                         <button type="submit" class="btn btn-sm btn-secondary">
                                             Demote
@@ -80,7 +80,7 @@ else
                                 }
                                 else
                                 {
-                                <form method="post" @formname=$"promote-@info.User.Id" @onsubmit='() => ChangeRoleAsync(info, "admin")' style="display:inline">
+                                <form method="post" @formname="@($"promote-{info.User.Id}")" @onsubmit='() => ChangeRoleAsync(info, "admin")' style="display:inline">
                                         <AntiforgeryToken />
                                         <button type="submit" class="btn btn-sm btn-secondary">
                                             Promote
@@ -88,7 +88,7 @@ else
                                     </form>
                                 }
 
-                                <form method="post" @formname=$"toggle-disable-@info.User.Id" @onsubmit='() => ToggleDisableAsync(info)' style="display:inline">
+                                <form method="post" @formname="@($"toggle-disable-{info.User.Id}")" @onsubmit='() => ToggleDisableAsync(info)' style="display:inline">
                                     <AntiforgeryToken />
                                     <button type="submit" class='btn btn-sm @(info.IsDisabled ? "btn-success" : "btn-danger")'>
                                         @(info.IsDisabled ? "Enable" : "Disable")
