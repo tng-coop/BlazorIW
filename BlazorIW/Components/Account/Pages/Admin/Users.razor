@@ -1,18 +1,46 @@
 @page "/Account/Admin/Users"
+@using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
 @using BlazorIW.Data
 @inject UserManager<ApplicationUser> UserManager
+@inject IdentityUserAccessor UserAccessor
+@inject IdentityRedirectManager RedirectManager
 
-<PageTitle>User List</PageTitle>
+<PageTitle>User Management</PageTitle>
 
-<h3>Users</h3>
+<h3>Add User</h3>
+<StatusMessage Message="@message" />
+<EditForm Model="NewUser" FormName="add-user" OnValidSubmit="CreateUserAsync" method="post">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="NewUser.Email" id="NewUser.Email" class="form-control" placeholder="name@example.com" />
+        <label for="NewUser.Email">Email</label>
+        <ValidationMessage For="() => NewUser.Email" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText type="password" @bind-Value="NewUser.Password" id="NewUser.Password" class="form-control" placeholder="password" />
+        <label for="NewUser.Password">Password</label>
+        <ValidationMessage For="() => NewUser.Password" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputSelect @bind-Value="NewUser.Role" id="NewUser.Role" class="form-select">
+            <option value="admin">Admin</option>
+            <option value="editor">Editor</option>
+        </InputSelect>
+        <label for="NewUser.Role">Role</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Add User</button>
+</EditForm>
 
-@if (users is null)
+<h3 class="mt-4">Existing Users</h3>
+
+@if (userInfos is null)
 {
     <p>Loading...</p>
 }
-else if (!users.Any())
+else if (!userInfos.Any())
 {
     <p>No users found.</p>
 }
@@ -23,14 +51,51 @@ else
             <tr>
                 <th>User Name</th>
                 <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in users)
+            @foreach (var info in userInfos)
             {
                 <tr>
-                    <td>@user.UserName</td>
-                    <td>@user.Email</td>
+                    <td>@info.User.UserName</td>
+                    <td>@info.User.Email</td>
+                    <td>@info.Role</td>
+                    <td>@(info.IsDisabled ? "Disabled" : "Active")</td>
+                    <td>
+                        @if (info.User.Id != CurrentUserId)
+                        {
+                            <div class="btn-group" role="group">
+                                @if (info.Role == "admin")
+                                {
+                                    <form method="post" @onsubmit="() => ChangeRoleAsync(info, "editor")" style="display:inline">
+                                        <AntiforgeryToken />
+                                        <button type="submit" class="btn btn-sm btn-secondary">Demote</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form method="post" @onsubmit="() => ChangeRoleAsync(info, "admin")" style="display:inline">
+                                        <AntiforgeryToken />
+                                        <button type="submit" class="btn btn-sm btn-secondary">Promote</button>
+                                    </form>
+                                }
+
+                                <form method="post" @onsubmit="() => ToggleDisableAsync(info)" style="display:inline">
+                                    <AntiforgeryToken />
+                                    <button type="submit" class="btn btn-sm @(info.IsDisabled ? "btn-success" : "btn-danger")">
+                                        @(info.IsDisabled ? "Enable" : "Disable")
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <span>(You)</span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
@@ -38,10 +103,103 @@ else
 }
 
 @code {
-    private List<ApplicationUser>? users;
+    private sealed class CreateUserModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [StringLength(100, MinimumLength = 6)]
+        public string Password { get; set; } = "";
+
+        [Required]
+        public string Role { get; set; } = "editor";
+    }
+
+    private sealed class UserInfo
+    {
+        public required ApplicationUser User { get; init; }
+        public string? Role { get; init; }
+        public bool IsDisabled { get; init; }
+    }
+
+    private List<UserInfo>? userInfos;
+    private string? CurrentUserId;
+    private string? message;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private CreateUserModel NewUser { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        users = await UserManager.Users.ToListAsync();
+        await RefreshUsersAsync();
+    }
+
+    private async Task RefreshUsersAsync()
+    {
+        var currentUser = await UserAccessor.GetRequiredUserAsync(HttpContext);
+        CurrentUserId = currentUser.Id;
+
+        var users = await UserManager.Users.ToListAsync();
+        userInfos = new();
+        foreach (var user in users)
+        {
+            var role = (await UserManager.GetRolesAsync(user)).FirstOrDefault();
+            var disabled = await UserManager.IsLockedOutAsync(user);
+            userInfos.Add(new UserInfo { User = user, Role = role, IsDisabled = disabled });
+        }
+    }
+
+    private async Task CreateUserAsync()
+    {
+        var user = new ApplicationUser { UserName = NewUser.Email, Email = NewUser.Email, EmailConfirmed = true };
+        var result = await UserManager.CreateAsync(user, NewUser.Password);
+        if (!result.Succeeded)
+        {
+            message = "Error: " + string.Join(", ", result.Errors.Select(e => e.Description));
+            return;
+        }
+        await UserManager.AddToRoleAsync(user, NewUser.Role);
+        message = $"User '{NewUser.Email}' added as {NewUser.Role}.";
+        NewUser = new();
+        await RefreshUsersAsync();
+    }
+
+    private async Task ChangeRoleAsync(UserInfo info, string role)
+    {
+        if (info.User.Id == CurrentUserId)
+        {
+            return;
+        }
+
+        await UserManager.RemoveFromRolesAsync(info.User, new[] { "admin", "editor" });
+        await UserManager.AddToRoleAsync(info.User, role);
+        message = $"User '{info.User.Email}' is now {role}.";
+        await RefreshUsersAsync();
+    }
+
+    private async Task ToggleDisableAsync(UserInfo info)
+    {
+        if (info.User.Id == CurrentUserId)
+        {
+            return;
+        }
+
+        if (info.IsDisabled)
+        {
+            await UserManager.SetLockoutEndDateAsync(info.User, null);
+            message = $"User '{info.User.Email}' enabled.";
+        }
+        else
+        {
+            await UserManager.SetLockoutEnabledAsync(info.User, true);
+            await UserManager.SetLockoutEndDateAsync(info.User, DateTimeOffset.MaxValue);
+            message = $"User '{info.User.Email}' disabled.";
+        }
+        await RefreshUsersAsync();
     }
 }
