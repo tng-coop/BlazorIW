@@ -21,4 +21,9 @@ builder.Services.AddScoped<LocalizationService>();
 // Register Counter component as custom element <my-counter>
 builder.RootComponents.RegisterCustomElement<Counter>("my-counter");
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+
+var localization = host.Services.GetRequiredService<LocalizationService>();
+await localization.LoadCultureAsync();
+
+await host.RunAsync();
