@@ -2,6 +2,7 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Weather> L
 @inject LocalizationService Localization
+@implements IDisposable
 
 <PageTitle>@L["Weather"]</PageTitle>
 
@@ -42,6 +43,11 @@ else
 @code {
     private WeatherForecast[]? forecasts;
 
+    protected override void OnInitialized()
+    {
+        Localization.OnChange += Refresh;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate a loading indicator
@@ -63,5 +69,15 @@ else
         public int TemperatureC { get; set; }
         public string? Summary { get; set; }
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Localization.OnChange -= Refresh;
     }
 }
