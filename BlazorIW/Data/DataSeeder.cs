@@ -66,19 +66,26 @@ public static class DataSeeder
 
         if (await db.BranchOfficeContents.AnyAsync(cancellationToken))
             return;
-
-        db.BranchOfficeContents.Add(new BranchOfficeContent
+        var index = 1;
+        foreach (var seed in BranchOfficeSeedData.Data)
         {
-            Revision = 1,
-            Date = DateTime.UtcNow,
-            BranchName = "Headquarters",
-            Address = "123 Main St",
-            PostalCode = "00000",
-            TelephoneNumber = "123-456-7890",
-            FaxNumber = "123-456-7891",
-            Email = "info@example.com",
-            IsPublished = true
-        });
+            for (var i = 0; i < seed.Count; i++)
+            {
+                db.BranchOfficeContents.Add(new BranchOfficeContent
+                {
+                    Revision = 1,
+                    Date = DateTime.UtcNow,
+                    BranchName = $"Branch {index}",
+                    Address = $"Address {index}",
+                    PostalCode = seed.PostalCode,
+                    TelephoneNumber = "123-456-7890",
+                    FaxNumber = "123-456-7891",
+                    Email = $"branch{index}@example.com",
+                    IsPublished = true
+                });
+                index++;
+            }
+        }
 
         await db.SaveChangesAsync(cancellationToken);
     }
