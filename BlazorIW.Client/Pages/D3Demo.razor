@@ -1,15 +1,18 @@
 @page "/d3"
 @rendermode InteractiveWebAssembly
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<D3Demo> L
+@inject LocalizationService Localization
 
-<PageTitle>D3 Demo</PageTitle>
+<PageTitle>@L["D3 Demo"]</PageTitle>
 
-<h1>D3 Demo</h1>
+<h1>@L["D3 Demo"]</h1>
 
-<div id="view-toggle" class="btn-group btn-group-toggle mb-2" role="group" aria-label="View mode">
+<div id="view-toggle" class="btn-group btn-group-toggle mb-2" role="group" aria-label="@L["View mode"]">
     <input type="radio" class="btn-check" name="viewOptions" id="listOption" value="list" autocomplete="off">
-    <label class="btn btn-outline-primary" for="listOption">List</label>
+    <label class="btn btn-outline-primary" for="listOption">@L["List"]</label>
     <input type="radio" class="btn-check" name="viewOptions" id="mapOption" value="map" autocomplete="off" checked>
-    <label class="btn btn-outline-primary" for="mapOption">Hex Map</label>
+    <label class="btn btn-outline-primary" for="mapOption">@L["Hex Map"]</label>
 </div>
 
 <!-- 

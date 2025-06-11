@@ -1,27 +1,30 @@
 @page "/files"
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<FileList> L
+@inject LocalizationService Localization
 
-<PageTitle>File List</PageTitle>
+<PageTitle>@L["File List"]</PageTitle>
 
 @inject BlazorIW.Client.Services.FileService FileService
 
-<h1>Files under wwwroot</h1>
+<h1>@L["Files under wwwroot"]</h1>
 
 @if (files == null)
 {
-    <p>Loading...</p>
+    <p>@L["Loading..."]</p>
 }
 else if (!files.Any())
 {
-    <p>No files found.</p>
+    <p>@L["No files found."]</p>
 }
 else
 {
-    <button class="btn btn-primary mb-3" @onclick="StartAssessment" disabled="@isAssessing">Start Assessment</button>
+    <button class="btn btn-primary mb-3" @onclick="StartAssessment" disabled="@isAssessing">@L["Start Assessment"]</button>
     <table class="table">
         <thead>
             <tr>
-                <th>Path</th>
-                <th>Status</th>
+                <th>@L["Path"]</th>
+                <th>@L["Status"]</th>
             </tr>
         </thead>
         <tbody>
@@ -44,7 +47,7 @@ else
     {
         var fileData = await FileService.GetFilesAsync();
         files = fileData
-            .Select(f => new FileStatusInfo(f.Path, "Not checked"))
+            .Select(f => new FileStatusInfo(f.Path, L["Not checked"]))
             .ToList();
     }
 
@@ -59,10 +62,10 @@ else
 
         foreach (var file in files)
         {
-            file.Status = "Checking...";
+            file.Status = L["Checking..."]; 
             StateHasChanged();
             var ok = await FileService.IsFileAccessibleAsync(file.Path);
-            file.Status = ok ? "Accessible" : "Unavailable";
+            file.Status = ok ? L["Accessible"] : L["Unavailable"];
             StateHasChanged();
         }
 

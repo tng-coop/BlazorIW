@@ -1,13 +1,16 @@
 @page "/inspect"
 @rendermode InteractiveWebAssembly
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SelfInspection> L
+@inject LocalizationService Localization
 
-<PageTitle>Self Inspection</PageTitle>
+<PageTitle>@L["Self Inspection"]</PageTitle>
 
-<h1>Entity Framework Model</h1>
+<h1>@L["Entity Framework Model"]</h1>
 <div id="maindiv">
 @if (entities is null)
 {
-    <p>Loading...</p>
+    <p>@L["Loading..."]</p>
 }
 else
 {
@@ -18,8 +21,8 @@ else
         <table class="table table-bordered table-sm mb-3 w-auto">
             <thead class="table-primary">
                 <tr>
-                    <th>Property</th>
-                    <th>Type</th>
+                    <th>@L["Property"]</th>
+                    <th>@L["Type"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,12 +37,12 @@ else
         </table>
         @if (entity.Navigations?.Count > 0)
         {
-            <h4>Relations</h4>
+            <h4>@L["Relations"]</h4>
             <table class="table table-bordered table-sm mb-4 w-auto">
                 <thead class="table-secondary">
                     <tr>
-                        <th>Navigation</th>
-                        <th>Target</th>
+                        <th>@L["Navigation"]</th>
+                        <th>@L["Target"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +58,7 @@ else
         }
         @if (entity.Rows?.Count > 0)
         {
-            <h4>Top Rows</h4>
+            <h4>@L["Top Rows"]</h4>
             <table class="table table-bordered table-sm mb-4 w-auto">
                 <thead class="table-light">
                     <tr>

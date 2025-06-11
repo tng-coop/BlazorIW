@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Self Inspection" xml:space="preserve">
+    <value>自己検査</value>
+  </data>
+  <data name="Entity Framework Model" xml:space="preserve">
+    <value>Entity Framework モデル</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>読み込み中...</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>プロパティ</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>型</value>
+  </data>
+  <data name="Relations" xml:space="preserve">
+    <value>リレーション</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>ナビゲーション</value>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>ターゲット</value>
+  </data>
+  <data name="Top Rows" xml:space="preserve">
+    <value>上位行</value>
+  </data>
+</root>
