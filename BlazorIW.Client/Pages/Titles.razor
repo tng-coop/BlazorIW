@@ -3,6 +3,8 @@
 <PageTitle>Titles</PageTitle>
 
 @inject HtmlContentService HtmlSvc
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using Microsoft.AspNetCore.Components.Authorization
 
 <h1>Titles</h1>
 
@@ -62,11 +64,16 @@ else
     private List<HtmlContentDto>? items;
 
     private readonly Dictionary<Guid, ItemState> expandedItemStates = new();
+    private bool isAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {
         var fetched = await HtmlSvc.GetAllAsync();
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+
         items = fetched
+            .Where(i => isAuthenticated || i.IsPublished)
             .OrderByDescending(i => i.Date)
             .ToList();
     }
