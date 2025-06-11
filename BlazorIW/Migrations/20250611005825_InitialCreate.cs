@@ -97,6 +97,19 @@ namespace BlazorIW.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PostalCodes",
+                columns: table => new
+                {
+                    Zipcode = table.Column<string>(type: "text", nullable: false),
+                    Latitude = table.Column<double>(type: "double precision", nullable: false),
+                    Longitude = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostalCodes", x => x.Zipcode);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -280,6 +293,9 @@ namespace BlazorIW.Migrations
 
             migrationBuilder.DropTable(
                 name: "HtmlContents");
+
+            migrationBuilder.DropTable(
+                name: "PostalCodes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

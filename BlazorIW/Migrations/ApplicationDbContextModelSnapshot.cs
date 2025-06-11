@@ -167,6 +167,22 @@ namespace BlazorIW.Migrations
                     b.ToTable("HtmlContents");
                 });
 
+            modelBuilder.Entity("BlazorIW.Data.PostalCode", b =>
+                {
+                    b.Property<string>("Zipcode")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Zipcode");
+
+                    b.ToTable("PostalCodes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")

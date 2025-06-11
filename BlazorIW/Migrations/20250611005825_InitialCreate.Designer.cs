@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlazorIW.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610215021_InitialCreate")]
+    [Migration("20250611005825_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -168,6 +168,22 @@ namespace BlazorIW.Migrations
                         .HasFilter("\"IsReviewRequested\" = TRUE");
 
                     b.ToTable("HtmlContents");
+                });
+
+            modelBuilder.Entity("BlazorIW.Data.PostalCode", b =>
+                {
+                    b.Property<string>("Zipcode")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Zipcode");
+
+                    b.ToTable("PostalCodes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
