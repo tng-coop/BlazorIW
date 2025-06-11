@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Navigation menu" xml:space="preserve">
+    <value>Navigation menu</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Counter" xml:space="preserve">
+    <value>Counter</value>
+  </data>
+  <data name="Weather" xml:space="preserve">
+    <value>Weather</value>
+  </data>
+  <data name="File List" xml:space="preserve">
+    <value>File List</value>
+  </data>
+  <data name="Storage Demo" xml:space="preserve">
+    <value>Storage Demo</value>
+  </data>
+  <data name="Wordpress Posts" xml:space="preserve">
+    <value>Wordpress Posts</value>
+  </data>
+  <data name="Titles" xml:space="preserve">
+    <value>Titles</value>
+  </data>
+  <data name="D3 Demo" xml:space="preserve">
+    <value>D3 Demo</value>
+  </data>
+  <data name="Inspector" xml:space="preserve">
+    <value>Inspector</value>
+  </data>
+  <data name="Auth Required" xml:space="preserve">
+    <value>Auth Required</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+</root>

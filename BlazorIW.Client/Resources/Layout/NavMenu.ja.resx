@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Navigation menu" xml:space="preserve">
+    <value>ナビゲーション メニュー</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>ホーム</value>
+  </data>
+  <data name="Counter" xml:space="preserve">
+    <value>カウンター</value>
+  </data>
+  <data name="Weather" xml:space="preserve">
+    <value>天気</value>
+  </data>
+  <data name="File List" xml:space="preserve">
+    <value>ファイル一覧</value>
+  </data>
+  <data name="Storage Demo" xml:space="preserve">
+    <value>ストレージ デモ</value>
+  </data>
+  <data name="Wordpress Posts" xml:space="preserve">
+    <value>WordPress 投稿</value>
+  </data>
+  <data name="Titles" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="D3 Demo" xml:space="preserve">
+    <value>D3 デモ</value>
+  </data>
+  <data name="Inspector" xml:space="preserve">
+    <value>インスペクター</value>
+  </data>
+  <data name="Auth Required" xml:space="preserve">
+    <value>認証が必要</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>管理</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>ログアウト</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>ログイン</value>
+  </data>
+</root>
