@@ -142,6 +142,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        NewUser ??= new();
         await RefreshUsersAsync();
     }
 
