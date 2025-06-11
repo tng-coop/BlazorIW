@@ -69,7 +69,15 @@ public static class DataSeeder
 
         db.BranchOfficeContents.Add(new BranchOfficeContent
         {
-            Address = "123 Main St"
+            Revision = 1,
+            Date = DateTime.UtcNow,
+            BranchName = "Headquarters",
+            Address = "123 Main St",
+            PostalCode = "00000",
+            TelephoneNumber = "123-456-7890",
+            FaxNumber = "123-456-7891",
+            Email = "info@example.com",
+            IsPublished = true
         });
 
         await db.SaveChangesAsync(cancellationToken);

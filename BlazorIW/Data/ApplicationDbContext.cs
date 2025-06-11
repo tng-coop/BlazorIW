@@ -23,6 +23,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .IsUnique()
             .HasFilter("\"IsPublished\" = TRUE");
 
+        builder.Entity<BranchOfficeContent>().HasKey(b => new { b.Id, b.Revision });
+        builder.Entity<BranchOfficeContent>()
+            .HasIndex(b => new { b.Id, b.IsReviewRequested })
+            .IsUnique()
+            .HasFilter("\"IsReviewRequested\" = TRUE");
+        builder.Entity<BranchOfficeContent>()
+            .HasIndex(b => new { b.Id, b.IsPublished })
+            .IsUnique()
+            .HasFilter("\"IsPublished\" = TRUE");
+
         builder.Entity<PostalCode>().HasKey(p => p.Zipcode);
     }
 }
