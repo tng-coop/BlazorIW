@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Counter" xml:space="preserve">
+    <value>カウンター</value>
+  </data>
+  <data name="Current count:" xml:space="preserve">
+    <value>現在の数:</value>
+  </data>
+  <data name="Click me" xml:space="preserve">
+    <value>クリックして</value>
+  </data>
+</root>

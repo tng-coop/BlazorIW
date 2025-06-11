@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Home" xml:space="preserve">
+    <value>ホーム</value>
+  </data>
+  <data name="Thank you coop" xml:space="preserve">
+    <value>ありがとう協同組合</value>
+  </data>
+</root>

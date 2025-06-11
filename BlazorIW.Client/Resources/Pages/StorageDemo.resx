@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Storage Demo" xml:space="preserve">
+    <value>Storage Demo</value>
+  </data>
+  <data name="Browser Storage Demo" xml:space="preserve">
+    <value>Browser Storage Demo</value>
+  </data>
+  <data name="Enter value" xml:space="preserve">
+    <value>Enter value</value>
+  </data>
+  <data name="Save Local" xml:space="preserve">
+    <value>Save Local</value>
+  </data>
+  <data name="Load Local" xml:space="preserve">
+    <value>Load Local</value>
+  </data>
+  <data name="Clear Local" xml:space="preserve">
+    <value>Clear Local</value>
+  </data>
+  <data name="Save Session" xml:space="preserve">
+    <value>Save Session</value>
+  </data>
+  <data name="Load Session" xml:space="preserve">
+    <value>Load Session</value>
+  </data>
+  <data name="Clear Session" xml:space="preserve">
+    <value>Clear Session</value>
+  </data>
+  <data name="Stored value:" xml:space="preserve">
+    <value>Stored value:</value>
+  </data>
+</root>

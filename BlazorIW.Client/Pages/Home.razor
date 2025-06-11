@@ -1,8 +1,11 @@
 ﻿@page "/"
 @rendermode InteractiveWebAssembly
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Home> L
+@inject LocalizationService Localization
 
-<PageTitle>Home</PageTitle>
+<PageTitle>@L["Home"]</PageTitle>
 
-<h1 id="homeTitle">Thank you coop</h1>
+<h1 id="homeTitle">@L["Thank you coop"]</h1>
 
 <BackgroundVideo/>

@@ -2,27 +2,30 @@
 @rendermode InteractiveWebAssembly
 @using System.Text.Json
 @using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<WordPress> L
+@inject LocalizationService Localization
 
-<PageTitle>WordPress Posts</PageTitle>
+<PageTitle>@L["WordPress Posts"]</PageTitle>
 
 @inject WordPressService WordPressSvc
 @inject BrowserStorageService Storage
 @inject HtmlContentService HtmlSvc
 
-<h1>WordPress Posts</h1>
+<h1>@L["WordPress Posts"]</h1>
 
 <div class="mb-3">
-    <input class="form-control" placeholder="Enter base API URL" @bind="baseUrl" />
+    <input class="form-control" placeholder="@L["Enter base API URL"]" @bind="baseUrl" />
 </div>
-<button class="btn btn-primary mb-3" @onclick="LoadPosts">Fetch Posts</button>
+<button class="btn btn-primary mb-3" @onclick="LoadPosts">@L["Fetch Posts"]</button>
 <button class="btn btn-secondary mb-3 ms-2" @onclick="ToggleSummary" disabled="@(posts is null)">
-    @(showSummary ? "Show JSON" : "Show Summary")
+    @(showSummary ? L["Show JSON"] : L["Show Summary"])
 </button>
-<button class="btn btn-success mb-3 ms-2" @onclick="ImportPosts" disabled="@(posts is null)">Import Posts</button>
+<button class="btn btn-success mb-3 ms-2" @onclick="ImportPosts" disabled="@(posts is null)">@L["Import Posts"]</button>
 
 @if (isLoading)
 {
-    <p><em>Loading...</em></p>
+    <p><em>@L["Loading..."]</em></p>
 }
 else if (!string.IsNullOrEmpty(errorMessage))
 {
@@ -35,10 +38,10 @@ else if (posts != null)
         <table class="table">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Title</th>
-                    <th>Excerpt</th>
-                    <th>Content</th>
+                    <th>@L["Date"]</th>
+                    <th>@L["Title"]</th>
+                    <th>@L["Excerpt"]</th>
+                    <th>@L["Content"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,8 +62,8 @@ else if (posts != null)
         <table class="table">
             <thead>
                 <tr>
-                    <th>Exists</th>
-                    <th>Json</th>
+                    <th>@L["Exists"]</th>
+                    <th>@L["Json"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -78,7 +81,7 @@ else if (posts != null)
                             else
                             {
                                 <span>✖</span>
-                                <button class="btn btn-sm btn-primary ms-2" @onclick="() => DownloadPost(p)">Download</button>
+                                <button class="btn btn-sm btn-primary ms-2" @onclick="() => DownloadPost(p)">@L["Download"]</button>
                             }
                         </td>
                         <td><pre>@json</pre></td>
@@ -143,7 +146,7 @@ else if (posts != null)
     {
         if (string.IsNullOrWhiteSpace(baseUrl))
         {
-            errorMessage = "Please enter a URL.";
+            errorMessage = L["Please enter a URL."];
             posts = null;
             return;
         }
@@ -157,7 +160,7 @@ else if (posts != null)
             posts = await WordPressSvc.FetchPostsAsync(baseUrl);
             if (posts.Count == 0)
             {
-                errorMessage = "No posts found.";
+                errorMessage = L["No posts found."];
             }
             await Storage.SetLocalStorageAsync(UrlKey, baseUrl);
             await Storage.SetLocalStorageAsync(PostsKey, postsJson ?? string.Empty);
@@ -190,7 +193,7 @@ else if (posts != null)
         {
             var added = await HtmlSvc.ImportPostsAsync(list);
             existingTitles = await HtmlSvc.GetTitlesAsync();
-            infoMessage = $"Imported {added} post(s).";
+            infoMessage = string.Format(L["Imported {0} post(s)."], added);
         }
         catch (Exception ex)
         {
@@ -210,7 +213,7 @@ else if (posts != null)
         {
             var added = await HtmlSvc.ImportPostsAsync(new[] { dto });
             existingTitles = await HtmlSvc.GetTitlesAsync();
-            infoMessage = $"Imported {added} post(s).";
+            infoMessage = string.Format(L["Imported {0} post(s)."], added);
         }
         catch (Exception ex)
         {

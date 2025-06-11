@@ -1,29 +1,32 @@
 @page "/storage"
 @rendermode InteractiveWebAssembly
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<StorageDemo> L
+@inject LocalizationService Localization
 
-<PageTitle>Storage Demo</PageTitle>
+<PageTitle>@L["Storage Demo"]</PageTitle>
 
 @inject BrowserStorageService Storage
 
-<h1>Browser Storage Demo</h1>
+<h1>@L["Browser Storage Demo"]</h1>
 
 <div class="mb-3">
-    <input class="form-control" placeholder="Enter value" @bind="inputValue" />
+    <input class="form-control" placeholder="@L["Enter value"]" @bind="inputValue" />
 </div>
 
 <div class="mb-3">
-    <button class="btn btn-primary me-1" @onclick="SaveLocalAsync">Save Local</button>
-    <button class="btn btn-secondary me-1" @onclick="LoadLocalAsync">Load Local</button>
-    <button class="btn btn-outline-danger me-1" @onclick="ClearLocalAsync">Clear Local</button>
+    <button class="btn btn-primary me-1" @onclick="SaveLocalAsync">@L["Save Local"]</button>
+    <button class="btn btn-secondary me-1" @onclick="LoadLocalAsync">@L["Load Local"]</button>
+    <button class="btn btn-outline-danger me-1" @onclick="ClearLocalAsync">@L["Clear Local"]</button>
 </div>
 
 <div class="mb-3">
-    <button class="btn btn-primary me-1" @onclick="SaveSessionAsync">Save Session</button>
-    <button class="btn btn-secondary me-1" @onclick="LoadSessionAsync">Load Session</button>
-    <button class="btn btn-outline-danger me-1" @onclick="ClearSessionAsync">Clear Session</button>
+    <button class="btn btn-primary me-1" @onclick="SaveSessionAsync">@L["Save Session"]</button>
+    <button class="btn btn-secondary me-1" @onclick="LoadSessionAsync">@L["Load Session"]</button>
+    <button class="btn btn-outline-danger me-1" @onclick="ClearSessionAsync">@L["Clear Session"]</button>
 </div>
 
-<p>Stored value: @storedValue</p>
+<p>@L["Stored value:"] @storedValue</p>
 
 @code {
     private string? inputValue;

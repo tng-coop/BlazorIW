@@ -1,20 +1,23 @@
 @page "/titles"
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Titles> L
+@inject LocalizationService Localization
 
-<PageTitle>Titles</PageTitle>
+<PageTitle>@L["Titles"]</PageTitle>
 
 @inject HtmlContentService HtmlSvc
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using Microsoft.AspNetCore.Components.Authorization
 
-<h1>Titles</h1>
+<h1>@L["Titles"]</h1>
 
 @if (items == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>@L["Loading..."]</em></p>
 }
 else if (items.Count == 0)
 {
-    <p>No entries found.</p>
+    <p>@L["No entries found."]</p>
 }
 else
 {
@@ -45,22 +48,22 @@ else
                         <div class="btn-group mb-2" role="group">
                             @if (showFull)
                             {
-                                <button class="btn btn-sm btn-secondary" @onclick="() => ShowExcerpt(item.Id)">Show Excerpt</button>
+                                <button class="btn btn-sm btn-secondary" @onclick="() => ShowExcerpt(item.Id)">@L["Show Excerpt"]</button>
                             }
                             else
                             {
-                                <button class="btn btn-sm btn-secondary" @onclick="() => ShowFull(item.Id)">Show Full</button>
+                                <button class="btn btn-sm btn-secondary" @onclick="() => ShowFull(item.Id)">@L["Show Full"]</button>
                             }
-                            <button class="btn btn-sm btn-outline-secondary" @onclick="() => Collapse(item.Id)">Collapse</button>
+                            <button class="btn btn-sm btn-outline-secondary" @onclick="() => Collapse(item.Id)">@L["Collapse"]</button>
                         </div>
                         @if (isAuthenticated)
                         {
-                            <div class="mb-2">Status: @GetStatusValue(item)</div>
+                            <div class="mb-2">@L["Status"]: @L[GetStatusValue(item)]</div>
                             <AuthorizeView Roles="admin">
                                 <select class="form-select form-select-sm w-auto mb-2" value="@GetStatusValue(item)" @onchange="async e => await ChangeStatusAsync(item, e.Value?.ToString())">
-                                    <option value="Draft">Draft</option>
-                                    <option value="Review">Review</option>
-                                    <option value="Published">Published</option>
+                                    <option value="Draft">@L["Draft"]</option>
+                                    <option value="Review">@L["Review"]</option>
+                                    <option value="Published">@L["Published"]</option>
                                 </select>
                             </AuthorizeView>
                         }

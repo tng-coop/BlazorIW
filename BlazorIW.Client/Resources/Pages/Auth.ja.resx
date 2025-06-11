@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Auth" xml:space="preserve">
+    <value>認証</value>
+  </data>
+  <data name="You are authenticated" xml:space="preserve">
+    <value>あなたは認証されています</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>こんにちは</value>
+  </data>
+</root>

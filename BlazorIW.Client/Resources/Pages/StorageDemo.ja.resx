@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Storage Demo" xml:space="preserve">
+    <value>ストレージデモ</value>
+  </data>
+  <data name="Browser Storage Demo" xml:space="preserve">
+    <value>ブラウザストレージデモ</value>
+  </data>
+  <data name="Enter value" xml:space="preserve">
+    <value>値を入力</value>
+  </data>
+  <data name="Save Local" xml:space="preserve">
+    <value>ローカル保存</value>
+  </data>
+  <data name="Load Local" xml:space="preserve">
+    <value>ローカル読み込み</value>
+  </data>
+  <data name="Clear Local" xml:space="preserve">
+    <value>ローカル削除</value>
+  </data>
+  <data name="Save Session" xml:space="preserve">
+    <value>セッション保存</value>
+  </data>
+  <data name="Load Session" xml:space="preserve">
+    <value>セッション読み込み</value>
+  </data>
+  <data name="Clear Session" xml:space="preserve">
+    <value>セッション削除</value>
+  </data>
+  <data name="Stored value:" xml:space="preserve">
+    <value>保存された値:</value>
+  </data>
+</root>

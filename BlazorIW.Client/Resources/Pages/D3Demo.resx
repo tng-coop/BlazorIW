@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="D3 Demo" xml:space="preserve">
+    <value>D3 Demo</value>
+  </data>
+  <data name="View mode" xml:space="preserve">
+    <value>View mode</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="Hex Map" xml:space="preserve">
+    <value>Hex Map</value>
+  </data>
+</root>

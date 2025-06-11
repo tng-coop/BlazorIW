@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="File List" xml:space="preserve">
+    <value>ファイル一覧</value>
+  </data>
+  <data name="Files under wwwroot" xml:space="preserve">
+    <value>wwwrootのファイル</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>読み込み中...</value>
+  </data>
+  <data name="No files found." xml:space="preserve">
+    <value>ファイルが見つかりません。</value>
+  </data>
+  <data name="Start Assessment" xml:space="preserve">
+    <value>検査開始</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>パス</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>状態</value>
+  </data>
+  <data name="Not checked" xml:space="preserve">
+    <value>未確認</value>
+  </data>
+  <data name="Checking..." xml:space="preserve">
+    <value>確認中...</value>
+  </data>
+  <data name="Accessible" xml:space="preserve">
+    <value>アクセス可能</value>
+  </data>
+  <data name="Unavailable" xml:space="preserve">
+    <value>利用不可</value>
+  </data>
+</root>
