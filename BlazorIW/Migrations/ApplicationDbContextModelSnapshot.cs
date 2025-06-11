@@ -113,14 +113,53 @@ namespace BlazorIW.Migrations
             modelBuilder.Entity("BlazorIW.Data.BranchOfficeContent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Revision")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<string>("BranchName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FaxNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsReviewRequested")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TelephoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id", "Revision");
+
+                    b.HasIndex("Id", "IsPublished")
+                        .IsUnique()
+                        .HasFilter("\"IsPublished\" = TRUE");
+
+                    b.HasIndex("Id", "IsReviewRequested")
+                        .IsUnique()
+                        .HasFilter("\"IsReviewRequested\" = TRUE");
 
                     b.ToTable("BranchOfficeContents");
                 });

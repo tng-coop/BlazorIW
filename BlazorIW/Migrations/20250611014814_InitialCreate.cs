@@ -71,11 +71,20 @@ namespace BlazorIW.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false)
+                    Revision = table.Column<int>(type: "integer", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    BranchName = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
+                    PostalCode = table.Column<string>(type: "text", nullable: false),
+                    TelephoneNumber = table.Column<string>(type: "text", nullable: false),
+                    FaxNumber = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    IsReviewRequested = table.Column<bool>(type: "boolean", nullable: false),
+                    IsPublished = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BranchOfficeContents", x => x.Id);
+                    table.PrimaryKey("PK_BranchOfficeContents", x => new { x.Id, x.Revision });
                 });
 
             migrationBuilder.CreateTable(
@@ -251,6 +260,20 @@ namespace BlazorIW.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BranchOfficeContents_Id_IsPublished",
+                table: "BranchOfficeContents",
+                columns: new[] { "Id", "IsPublished" },
+                unique: true,
+                filter: "\"IsPublished\" = TRUE");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BranchOfficeContents_Id_IsReviewRequested",
+                table: "BranchOfficeContents",
+                columns: new[] { "Id", "IsReviewRequested" },
+                unique: true,
+                filter: "\"IsReviewRequested\" = TRUE");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HtmlContents_Id_IsPublished",
