@@ -1,5 +1,7 @@
 using System.Globalization;
 using Microsoft.JSInterop;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace BlazorIW.Client.Services;
 
@@ -7,13 +9,15 @@ public class LocalizationService
 {
     private readonly IJSRuntime _js;
     private readonly BrowserStorageService _storage;
+    private readonly HttpClient _http;
     private bool _loaded;
     public event Action? OnChange;
 
-    public LocalizationService(IJSRuntime js, BrowserStorageService storage)
+    public LocalizationService(IJSRuntime js, BrowserStorageService storage, HttpClient http)
     {
         _js = js;
         _storage = storage;
+        _http = http;
         CurrentCulture = CultureInfo.CurrentCulture;
     }
 
@@ -48,6 +52,7 @@ public class LocalizationService
         }
 
         SetThreadCulture(culture);
+        await _http.GetAsync($"api/set-culture?culture={Uri.EscapeDataString(culture)}");
         _loaded = true;
         OnChange?.Invoke();
     }
@@ -55,6 +60,7 @@ public class LocalizationService
     public async Task SetCultureAsync(string culture)
     {
         await _storage.SetLocalStorageAsync("blazorCulture", culture);
+        await _http.GetAsync($"api/set-culture?culture={Uri.EscapeDataString(culture)}");
         SetThreadCulture(culture);
         OnChange?.Invoke();
     }
