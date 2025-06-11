@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Weather" xml:space="preserve">
+    <value>Weather</value>
+  </data>
+  <data name="This component demonstrates showing data." xml:space="preserve">
+    <value>This component demonstrates showing data.</value>
+  </data>
+  <data name="Current Culture" xml:space="preserve">
+    <value>Current Culture</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Temperature in Celsius" xml:space="preserve">
+    <value>Temperature in Celsius</value>
+  </data>
+  <data name="Temp. (C)" xml:space="preserve">
+    <value>Temp. (C)</value>
+  </data>
+  <data name="Temperature in Farenheit" xml:space="preserve">
+    <value>Temperature in Farenheit</value>
+  </data>
+  <data name="Temp. (F)" xml:space="preserve">
+    <value>Temp. (F)</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+</root>

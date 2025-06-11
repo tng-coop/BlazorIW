@@ -6,6 +6,8 @@ using BlazorIW.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthenticationStateDeserialization();

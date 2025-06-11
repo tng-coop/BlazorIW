@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Weather" xml:space="preserve">
+    <value>天気</value>
+  </data>
+  <data name="This component demonstrates showing data." xml:space="preserve">
+    <value>このコンポーネントはデータの表示を示しています。</value>
+  </data>
+  <data name="Current Culture" xml:space="preserve">
+    <value>現在のカルチャ</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>読み込み中...</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>日付</value>
+  </data>
+  <data name="Temperature in Celsius" xml:space="preserve">
+    <value>摂氏の温度</value>
+  </data>
+  <data name="Temp. (C)" xml:space="preserve">
+    <value>温度 (C)</value>
+  </data>
+  <data name="Temperature in Farenheit" xml:space="preserve">
+    <value>華氏の温度</value>
+  </data>
+  <data name="Temp. (F)" xml:space="preserve">
+    <value>温度 (F)</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>概要</value>
+  </data>
+</root>
