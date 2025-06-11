@@ -20,7 +20,8 @@
         <ValidationMessage For="() => NewUser.Email" class="text-danger" />
     </div>
     <div class="form-floating mb-3">
-        <InputText type="password" @bind-Value="NewUser.Password" id="NewUser.Password" class="form-control" placeholder="password" />
+        <InputText type="password" @bind-Value="NewUser.Password" id="NewUser.Password" class="form-control"
+            placeholder="password" />
         <label for="NewUser.Password">Password</label>
         <ValidationMessage For="() => NewUser.Password" class="text-danger" />
     </div>
@@ -70,22 +71,26 @@ else
                             <div class="btn-group" role="group">
                                 @if (info.Role == "admin")
                                 {
-                                    <form method="post" @onsubmit="() => ChangeRoleAsync(info, "editor")" style="display:inline">
+                                    <form method="post" @onsubmit='() => ChangeRoleAsync(info, "editor")' style="display:inline">
                                         <AntiforgeryToken />
-                                        <button type="submit" class="btn btn-sm btn-secondary">Demote</button>
+                                        <button type="submit" class="btn btn-sm btn-secondary">
+                                            Demote
+                                        </button>
                                     </form>
                                 }
                                 else
                                 {
-                                    <form method="post" @onsubmit="() => ChangeRoleAsync(info, "admin")" style="display:inline">
+                                    <form method="post" @onsubmit='() => ChangeRoleAsync(info, "admin")' style="display:inline">
                                         <AntiforgeryToken />
-                                        <button type="submit" class="btn btn-sm btn-secondary">Promote</button>
+                                        <button type="submit" class="btn btn-sm btn-secondary">
+                                            Promote
+                                        </button>
                                     </form>
                                 }
 
-                                <form method="post" @onsubmit="() => ToggleDisableAsync(info)" style="display:inline">
+                                <form method="post" @onsubmit='() => ToggleDisableAsync(info)' style="display:inline">
                                     <AntiforgeryToken />
-                                    <button type="submit" class="btn btn-sm @(info.IsDisabled ? "btn-success" : "btn-danger")">
+                                    <button type="submit" class='btn btn-sm @(info.IsDisabled ? "btn-success" : "btn-danger")'>
                                         @(info.IsDisabled ? "Enable" : "Disable")
                                     </button>
                                 </form>
@@ -99,6 +104,7 @@ else
                 </tr>
             }
         </tbody>
+
     </table>
 }
 
