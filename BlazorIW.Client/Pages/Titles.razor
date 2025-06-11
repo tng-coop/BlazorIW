@@ -35,24 +35,35 @@ else
                             <div class="mb-2">
                                 @((MarkupString)item.Content)
                             </div>
-                            <button class="btn btn-sm btn-secondary me-1" @onclick="() => ShowExcerpt(item.Id)">Show Excerpt</button>
                         }
                         else
                         {
                             <div class="mb-2">
                                 @((MarkupString)item.Excerpt)
                             </div>
-                            <button class="btn btn-sm btn-secondary me-1" @onclick="() => ShowFull(item.Id)">Show Full</button>
                         }
-                        <div class="mb-2">Status: @GetStatusValue(item)</div>
-                        <AuthorizeView Roles="admin">
-                            <select class="form-select form-select-sm w-auto mb-2" value="@GetStatusValue(item)" @onchange="async e => await ChangeStatusAsync(item, e.Value?.ToString())">
-                                <option value="Draft">Draft</option>
-                                <option value="Review">Review</option>
-                                <option value="Published">Published</option>
-                            </select>
-                        </AuthorizeView>
-                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Collapse(item.Id)">Collapse</button>
+                        <div class="btn-group mb-2" role="group">
+                            @if (showFull)
+                            {
+                                <button class="btn btn-sm btn-secondary" @onclick="() => ShowExcerpt(item.Id)">Show Excerpt</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-sm btn-secondary" @onclick="() => ShowFull(item.Id)">Show Full</button>
+                            }
+                            <button class="btn btn-sm btn-outline-secondary" @onclick="() => Collapse(item.Id)">Collapse</button>
+                        </div>
+                        @if (isAuthenticated)
+                        {
+                            <div class="mb-2">Status: @GetStatusValue(item)</div>
+                            <AuthorizeView Roles="admin">
+                                <select class="form-select form-select-sm w-auto mb-2" value="@GetStatusValue(item)" @onchange="async e => await ChangeStatusAsync(item, e.Value?.ToString())">
+                                    <option value="Draft">Draft</option>
+                                    <option value="Review">Review</option>
+                                    <option value="Published">Published</option>
+                                </select>
+                            </AuthorizeView>
+                        }
                     }
                 </div>
             </li>
