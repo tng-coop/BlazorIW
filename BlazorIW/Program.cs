@@ -100,6 +100,7 @@ var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture("en")
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
+localizationOptions.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
 app.UseRequestLocalization(localizationOptions);
 
 // Serve files from wwwroot for environments where MapStaticAssets might not
@@ -109,6 +110,15 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
+
+app.MapGet("/api/set-culture", (HttpContext context, string culture) =>
+{
+    context.Response.Cookies.Append(
+        CookieRequestCultureProvider.DefaultCookieName,
+        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)));
+    return Results.Ok();
+});
 
 
 
