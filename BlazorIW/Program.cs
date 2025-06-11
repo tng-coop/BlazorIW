@@ -54,6 +54,7 @@ builder.Services.AddScoped<BrowserStorageService>();
 builder.Services.AddScoped<LocalizationService>();
 builder.Services.AddScoped<WordPressService>();
 builder.Services.AddScoped<HtmlContentService>();
+builder.Services.AddScoped<PostalCodeService>();
 
 var app = builder.Build();
 
@@ -72,6 +73,7 @@ using (var scope = app.Services.CreateScope())
         DataSeeder.SeedBackgroundVideosAsync(scope.ServiceProvider).GetAwaiter().GetResult();
         DataSeeder.SeedHtmlContentsAsync(scope.ServiceProvider).GetAwaiter().GetResult();
         DataSeeder.SeedBranchOfficeContentsAsync(scope.ServiceProvider).GetAwaiter().GetResult();
+        DataSeeder.SeedPostalCodesAsync(scope.ServiceProvider).GetAwaiter().GetResult();
         DataSeeder.SeedDefaultUsersAsync(scope.ServiceProvider, defaultUserPassword).GetAwaiter().GetResult();
 }
 

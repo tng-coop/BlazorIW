@@ -8,6 +8,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<BackgroundVideo> BackgroundVideos => Set<BackgroundVideo>();
     public DbSet<HtmlContentRevision> HtmlContents => Set<HtmlContentRevision>();
     public DbSet<BranchOfficeContent> BranchOfficeContents => Set<BranchOfficeContent>();
+    public DbSet<PostalCode> PostalCodes => Set<PostalCode>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -21,5 +22,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasIndex(h => new { h.Id, h.IsPublished })
             .IsUnique()
             .HasFilter("\"IsPublished\" = TRUE");
+
+        builder.Entity<PostalCode>().HasKey(p => p.Zipcode);
     }
 }
