@@ -8,12 +8,56 @@
     <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
     <link rel="stylesheet" href="@Assets["app.css"]" />
     <link rel="stylesheet" href="@Assets["BlazorIW.styles.css"]" />
+    <style>
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 10px;
+            height: 30vh;
+            width: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            z-index: -1;
+            background-color: black;
+            opacity: 0;
+            mask-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 150px, rgba(255, 255, 255, 1) 350px);
+            -webkit-mask-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 150px, rgba(255, 255, 255, 1) 350px);
+        }
+        .hide-video #background-video-1,
+        .hide-video #background-video-2 {
+            display: none;
+        }
+    </style>
+    <script>
+        if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+            document.documentElement.classList.add('hide-video');
+        }
+        window.setHomeVideoVisible = function (show) {
+            const v1 = document.getElementById('background-video-1');
+            const v2 = document.getElementById('background-video-2');
+            if (!v1 || !v2) return;
+            if (show) {
+                document.documentElement.classList.remove('hide-video');
+                v1.play();
+                v2.play();
+            } else {
+                document.documentElement.classList.add('hide-video');
+                v1.pause();
+                v2.pause();
+            }
+        };
+    </script>
     <ImportMap />
     <link rel="icon" type="image/png" href="favicon.png" />
     <HeadOutlet @rendermode="PageRenderMode" />
 </head>
 
 <body>
+    <video id="background-video-1" class="background-video" autoplay muted preload="auto" playsinline></video>
+    <video id="background-video-2" class="background-video" autoplay muted preload="auto" playsinline></video>
+    <script src='@Assets["js/background-video.js"]' defer></script>
     <Routes @rendermode="PageRenderMode" />
 
     <script src="@Assets["libman/d3.min.js"]"></script>
