@@ -7,20 +7,19 @@
     document.getElementById('background-video-1'),
     document.getElementById('background-video-2'),
   ];
-  const info = document.getElementById('video-info');
   if (!videos[0] || !videos[1]) {
     console.error('Missing one or both <video> elements!');
     return;
   }
 
-  // Only enforce inline‐play attributes and opacity transition.
-  videos.forEach((v, i) => {
+  // Ensure inline-play attributes; disable initial transition.
+  videos.forEach(v => {
     v.setAttribute('playsinline', '');
     v.setAttribute('webkit-playsinline', '');
     v.playsInline = true;
     v.loop = false;
     v.preload = 'auto';
-    v.style.transition = 'opacity 0.5s ease';
+    v.style.transition = 'none';
     v.style.opacity = '0';
   });
 
@@ -41,8 +40,6 @@
 
   let currentVideo = 0;    // index of the <video> that’s playing (0 or 1)
   let nextVideo    = 1;    // the other index
-  let playbacks    = 0;
-  let startTime    = null;
   let isSwitching  = false;
   const FADE_DURATION = 0.5; // seconds before end to trigger fade
   const CACHE_NAME    = 'pexels-videos-cache-v1';
@@ -96,7 +93,6 @@
       } catch (quotaErr) {
         console.warn('[preload] Could not cache video (quota?):', quotaErr);
       }
-    } else {
     }
 
     const blob = await response.blob();
@@ -108,12 +104,7 @@
     videoEl._lastBlobUrl = blobUrl;
 
     videoEl.src = blobUrl;
-    videoEl.load(); 
-
-    // Once metadata is ready, duration should be available. We'll log on "loadedmetadata".
-    videoEl.addEventListener('loadedmetadata', function onMeta() {
-      videoEl.removeEventListener('loadedmetadata', onMeta);
-    });
+    videoEl.load();
 
     return blobUrl;
   }
@@ -155,12 +146,6 @@
       return switchVideos();
     }
 
-    startTime = Date.now();
-    playbacks++;
-    // if (info) {
-    //   info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (0s)`;
-    // }
-
     setupTimeUpdate(videos[currentVideo]);
   }
 
@@ -198,28 +183,14 @@
 
     // Flip indices
     currentVideo = nextVideo;
-    nextVideo = currentVideo ? 0 : 1;
+    nextVideo = 1 - currentVideo;
 
-    // Update info panel & timestamps
-    startTime = Date.now();
-    playbacks++;
-    // if (info) {
-    //   info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (0s)`;
-    // }
-
-    // Re‐attach timeupdate to the now-current video
+    // Re-attach timeupdate to the now-current video
     setupTimeUpdate(videos[currentVideo]);
     isSwitching = false;
   }
 
   await initialize();
-
-  if (info) {
-    setInterval(() => {
-      if (startTime !== null) {
-        const seconds = Math.floor((Date.now() - startTime) / 1000);
-        // info.textContent = `URL: ${videos[currentVideo].src} (${playbacks}) (${seconds}s)`;
-      }
-    }, 1000);
-  }
+  // Restore transition for subsequent fades
+  videos.forEach(v => v.style.transition = 'opacity 0.5s ease');
 })();
