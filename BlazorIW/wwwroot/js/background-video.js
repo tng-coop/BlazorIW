@@ -1,4 +1,8 @@
 (async function () {
+  if (window.backgroundVideoInitialized) {
+    return;
+  }
+  window.backgroundVideoInitialized = true;
   const videos = [
     document.getElementById('background-video-1'),
     document.getElementById('background-video-2'),
@@ -54,12 +58,15 @@
         const info = await getVideoInfo(entry.api);
         if (info && info.url) {
           entry.url = info.url;
+          if (idx === 0 && info.poster) {
+            videos[0].setAttribute('poster', info.poster);
+          }
           return entry.url;
         } else {
-          console.warn(`[getCachedVideoUrl] No "url" field in JSON for attempt ${i+1}`);
+          console.warn(`[getCachedVideoUrl] No "url" field in JSON for attempt ${i + 1}`);
         }
       } catch (e) {
-        console.warn(`[getCachedVideoUrl] Error on attempt ${i+1} for idx ${idx}:`, e);
+        console.warn(`[getCachedVideoUrl] Error on attempt ${i + 1} for idx ${idx}:`, e);
         if (i === attempts - 1) throw e;
       }
     }
