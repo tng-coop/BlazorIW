@@ -14,3 +14,8 @@ When editing Razor components, do not mix double quotes for the attribute value 
 <button @onclick='() => ChangeRoleAsync(u, "editor")'>...</button>
 ```
 
+## Running tests
+
+Before committing changes, run `dotnet test` from the repository root to execute
+the unit tests in `BlazorIW.Tests`.
+
